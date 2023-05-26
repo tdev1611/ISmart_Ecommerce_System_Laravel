@@ -1,9 +1,10 @@
 @extends('admin/layouts.dashboard')
-@section('title','Chỉnh sửa sản phẩm')
+@section('title', 'Chỉnh sửa sản phẩm')
 
 @section('Laravel-File-Manager')
-    <script src="https://cdn.tiny.cloud/1/ycev3jqs96174pjltcois4npv3ucaz0uolrs5l7ra90v05qe/tinymce/5/tinymce.min.js"
-        referrerpolicy="origin"></script>
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
+
     <script>
         tinymce.init({
             selector: '#desc', // selector để add tiny vào 
@@ -16,46 +17,21 @@
             content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
         });
     </script>
-    <script>
-        var editor_config = {
-            path_absolute: "https://duchai.unitopcv.com/",
-            // path_absolute: "http://localhost/back-end/Laravel-Pro/lesson/Section-20-tiny-editor-form/project-name/",
 
-            selector: '#detail',
-            height: 420,
-            relative_urls: false,
+    <script>
+        tinymce.init({
+            selector: '#detail', // selector để add tiny vào 
+            height: 498,
             plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss preview',
             toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | forecolor backcolor| preview  | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | bold italic backcolor | removeformat ',
             tinycomments_mode: 'embedded',
             tinycomments_author: 'Author name',
-            file_picker_callback: function(callback, value, meta) {
-                var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName(
-                    'body')[0].clientWidth;
-                var y = window.innerHeight || document.documentElement.clientHeight || document
-                    .getElementsByTagName('body')[0].clientHeight;
+            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
 
-                var cmsURL = editor_config.path_absolute + 'laravel-filemanager?editor=' + meta.fieldname;
-                if (meta.filetype == 'image') {
-                    cmsURL = cmsURL + "&type=Images";
-                } else {
-                    cmsURL = cmsURL + "&type=Files";
-                }
-
-                tinyMCE.activeEditor.windowManager.openUrl({
-                    url: cmsURL,
-                    title: 'Quản lý ảnh',
-                    width: x * 0.8,
-                    height: y * 0.8,
-                    resizable: "yes",
-                    close_previous: "no",
-                    onMessage: (api, message) => {
-                        callback(message.content);
-                    }
-                });
-            }
-        };
-        tinymce.init(editor_config);
+        });
     </script>
+
+
 @endsection
 
 @section('style_css')
@@ -66,6 +42,30 @@
 
         .select_cate {
             font-weight: 500;
+        }
+
+        #image-list {
+            border: 1px solid;
+            display: flex;
+            list-style: none;
+            padding: 0;
+            align-items: center;
+            justify-content: center
+        }
+
+        #image-list li {
+            margin-right: 5px;
+        }
+
+        .img_list {
+            width: 100%;
+            height: auto;
+        }
+
+        #image_show {
+            width: 100px;
+            height: 100px;
+            border: 2px solid tan;
         }
     </style>
 @endsection
@@ -106,9 +106,25 @@
                                     <span class="text-danger"> {{ $message }}</span>
                                 @enderror
                             </div>
+                            @php
+                                $list_images = json_decode($product->list_images, true);
+                            @endphp
+
                             <div class="form-group w-50">
                                 <label for="files">Upload Các ảnh khác </label>
                                 <input name="list_images[]" multiple class="form-control" type="file" id="files">
+
+
+                                <div class="img-list">
+                                    <ul id="image-list">
+                                        @foreach ($list_images as $item)
+                                            <li>
+                                                <img class="img-fluid" id="img-list"
+                                                    src="{{ url(htmlspecialchars($item)) }}">
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
                                 @error('list_images')
                                     <span class="text-danger"> {{ $message }}</span>
                                 @enderror
@@ -124,7 +140,12 @@
                             </div>
                             <div class="form-group w-50">
                                 <label for="desc">Upload image</label>
-                                <input name="file" class="form-control" type="file" value="{{ $product->images }}">
+                                <input name="file" class="form-control" id="file" type="file"
+                                    value="{{ $product->images }}">
+                                <div class="mt-3">
+                                    <img class="" id="image_show" src="{{ url($product->images) }}"
+                                        alt="hiển thị ảnh">
+                                </div>
                                 @error('file')
                                     <span class="text-danger"> {{ $message }}</span>
                                 @enderror
@@ -134,7 +155,7 @@
                     </div>
                     <div class="col-6">
                         <div class="form-group border w-75">
-                            <style>
+                            {{-- <style>
                                 .img-list {
                                     width: 50%;
                                     height: 72px;
@@ -145,16 +166,10 @@
                                     /* padding-right: 5px; */
                                     padding: 20px;
                                 }
-                            </style>
-                            @php
-                                $list_images = json_decode($product->list_images, true);
-                            @endphp
+                            </style> --}}
 
-                            <div class="img-list">
-                                @foreach ($list_images as $item)
-                                    <img class="img-fluid" src="{{ url(htmlspecialchars($item)) }}" />
-                                @endforeach
-                            </div>
+
+
                         </div>
                     </div>
                     <div class="form-group">
@@ -273,6 +288,41 @@
 
 @section('create_slug')
     <script src="{{ asset('js/create_slug.js') }}"></script>
+
+    <script>
+        // 
+        $(document).ready(function() {
+            $('#files').change(function() {
+                var files = this.files;
+                var imageList = $('#image-list');
+
+                // Xóa tất cả các ảnh đã hiển thị trước đó
+                imageList.empty();
+                // Duyệt qua từng tệp tin đã chọn
+                for (var i = 0; i < files.length; i++) {
+                    var file = files[i];
+                    var reader = new FileReader();
+
+                    // Hàm xử lý sự kiện khi tệp tin được đọc
+                    reader.onload = (function(file) {
+                        return function(e) {
+                            // Tạo một phần tử <li> mới chứa phần tử <img>
+                            var listItem = $('<li>');
+                            var img = $('<img>').addClass('img_list').attr('src', e.target
+                                .result);
+
+                            // Thêm ảnh vào phần tử <li> và thêm vào danh sách
+                            listItem.append(img);
+                            imageList.append(listItem);
+                        };
+                    })(file);
+
+                    // Đọc nội dung của tệp tin
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+    </script>
 @endsection
 <?php
 function showCategoriesParent($categories, $cat_parent = null, $char = '')

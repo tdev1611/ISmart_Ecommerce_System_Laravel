@@ -186,7 +186,19 @@
     </script>
 
     @yield('create_slug')
-
+    <script>
+        $(document).ready(function() {
+            $('#file').change(function() {
+                var file = this.files[0];
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    var imageSrc = e.target.result;
+                    $('#image_show').attr('src', imageSrc);
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+    </script>
 </body>
 
 </html>

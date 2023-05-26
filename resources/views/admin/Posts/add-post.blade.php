@@ -7,8 +7,8 @@
     <script>
         var editor_config = {
             // path_absolute: là đường dẫn của dự án (project) để có thể upload file 
-            path_absolute: "http://localhost/back-end/Laravel-Pro/lesson/Section-20-tiny-editor-form/project-name/",
-            // path_absolute: "http://localhost/back-end/Laravel-Pro/project/admin-dashboards/",   
+            path_absolute: "http://localhost/back-end/Laravel-Pro/project/ismart/",
+           
 
             selector: '#content-post',
             height: 420,

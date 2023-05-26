@@ -99,6 +99,7 @@ class AdminPagesController extends Controller
         $request->validate(
             [
                 'title' => 'required',
+                'slug' => 'required',
                 'content' => 'required',
             ],
         );
