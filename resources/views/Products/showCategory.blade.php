@@ -176,20 +176,22 @@
                 <div class="section-detail">
                     <ul class="list-item">
                         @foreach ($bestSellingProducts as $item)
-                        <li class="clearfix">
-                            <a href="{{ route('productDetail', $item['slug']) }}" title="" class="thumb fl-left">
-                                <img src="{{ url($item['images']) }}" alt="">
-                            </a>
-                            <div class="info fl-right">
-                                <a href="{{ route('productDetail', $item['slug']) }}" title="" class="product-name">{{$item['name'] }}</a>
-                                <div class="price">
-                                    <span class="new">{{number_format($item['price'],0,'','.') }} đ</span>
-                                    <span class="old">17.190.000đ</span>
+                            <li class="clearfix">
+                                <a href="{{ route('productDetail', $item['slug']) }}" title="" class="thumb fl-left">
+                                    <img src="{{ url($item['images']) }}" alt="">
+                                </a>
+                                <div class="info fl-right">
+                                    <a href="{{ route('productDetail', $item['slug']) }}" title=""
+                                        class="product-name">{{ $item['name'] }}</a>
+                                    <div class="price">
+                                        <span class="new">{{ number_format($item['price'], 0, '', '.') }} đ</span>
+                                        <span class="old">17.190.000đ</span>
+                                    </div>
+                                    <a href="{{ route('buyNow', $item['product_id']) }}" title="" class="buy-now">Mua
+                                        ngay</a>
                                 </div>
-                                <a href="{{ route('buyNow', $item['product_id']) }}" title="" class="buy-now">Mua ngay</a>
-                            </div>
-                        </li>
-                    @endforeach
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
             </div>
@@ -202,7 +204,6 @@
             </div>
         </div>
     </div>
-
     <style>
         #notification {
             display: none;
@@ -248,7 +249,6 @@
                 },
                 dataType: 'json',
                 success: function(response) {
-
                     $('.qtys').text(response.cartCount); // Tổng gio hang layouts
                     $('.total-price-lo').text(response.cartTotal);
                     $('#notification').show()
@@ -267,10 +267,9 @@
     <script>
         $(document).ready(function() {
             $('select[name="sortProdByCate"]').on('change', function() {
-
                 var sortValue = $(this).val();
                 $.ajax({
-                    url: "{{ route('softProductsByCate',$category->slug) }}",
+                    url: "{{ route('softProductsByCate', $category->slug) }}",
                     type: "GET",
                     dataType: 'json',
                     data: {
@@ -281,8 +280,6 @@
                         // console.log(html_cate);
                         $('#productByCate').empty();
                         $('#productByCate').append(html_cate);
-
-                       
                     },
                     error: function(xhr, status, error) {
                         console.log(error);

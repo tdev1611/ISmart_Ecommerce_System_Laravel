@@ -109,8 +109,6 @@
                             <div class="form-group w-50">
                                 <label for="files">Upload Các ảnh khác </label>
                                 <input name="list_images[]" multiple class="form-control" type="file" id="files">
-
-
                                 <div class="img-list">
                                     <ul id="image-list"></ul>
                                 </div>
@@ -228,7 +226,6 @@
 
                 // Xóa tất cả các ảnh đã hiển thị trước đó
                 imageList.empty();
-
                 // Duyệt qua từng tệp tin đã chọn
                 for (var i = 0; i < files.length; i++) {
                     var file = files[i];

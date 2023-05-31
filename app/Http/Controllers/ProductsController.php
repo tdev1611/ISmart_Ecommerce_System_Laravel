@@ -13,17 +13,27 @@ class ProductsController extends Controller
     //
 
     // xuất sp danh mục category
-    function productBycateID(Request $request, $slug)
+    function productBycateID(Request $request)
     {
+
+        $slug = $request->route('slug');
         $categories = Category_product::where('status', 1)->whereNull('cat_parent')->get();
         $renderMenu = $this->renderCategory($categories);   // get cate menu
         // get san pham theo danh mục
         // cách 1 
         $category = Category_product::where('slug', $slug)->first();
-        $categoryId = $category->id;
-        $sub_categorys = Category_product::where('cat_parent', $categoryId)->get();
-        $subCategoryIds = $sub_categorys->pluck('id')->toArray();
-        $productByCate = Product::where('category_product_id', $categoryId)->orWhereIn('category_product_id', $subCategoryIds)->where('status',1)->get();
+
+        if ($category) {
+            $categoryId = $category->id;
+
+            $sub_categorys = Category_product::where('cat_parent', $categoryId)->get();
+            $subCategoryIds = $sub_categorys->pluck('id')->toArray();
+            $productByCate = Product::where('category_product_id', $categoryId)->orWhereIn('category_product_id', $subCategoryIds)->where('status', 1)->get();
+        } else {
+            abort(404);
+        }
+        //return json_encode($category);
+
 
         // ----- Cách 2: - Thiết lập quan hệ trong moddels
         // $category = Category_product::where('slug', $slug)->first();
@@ -63,7 +73,7 @@ class ProductsController extends Controller
 
         $subCate = Category_product::where('cat_parent', $categoryId)->get(); // danh mục con
         $subCateIds = $subCate->pluck('id')->toArray(); // id danh mục con
-        $products = Product::where('category_product_id', $categoryId)->orWhereIn('category_product_id', $subCateIds);
+        $products = Product::where('category_product_id', $categoryId)->orWhereIn('category_product_id', $subCateIds)->where('status', 1);
 
         // ----------------------
         // $products = Product::where('category_product_id', $categoryId)
@@ -89,11 +99,22 @@ class ProductsController extends Controller
 
 
     // --- --- --- --- --- --- --- ------ --- --- --- --- --- --- ------ --- --- --- --- --- --- ------ --- 
-    function productDetail($slug)
+    function productDetail(Request $request)
     {
+        $slug = $request->route('slug');
+
+
         $categories = Category_product::where('status', 1)->whereNull('cat_parent')->get();
         $renderMenu = $this->renderCategory($categories);   // get cate menu
+
         $product = Product::where('slug', $slug)->first();
+        if ($product) {
+            $categoryId = $product->category_product_id;
+            $relatedProducts =  Product::where('category_product_id', $categoryId)->get();
+        } else {
+            abort(404);
+        }
+        // cách 3:
 
         // product same
         //  danh mục chứa sản phẩm
@@ -113,11 +134,9 @@ class ProductsController extends Controller
         #C2 : // set relationship trong models
         // $categoryProduct = $product->category_product;
         // $relatedProducts =   $categoryProduct->productsRecursive();
-            
-        // cách 3:
-        $categoryId = $product->category_product_id;
-        $relatedProducts =  Product::where('category_product_id', $categoryId)->get();
-        
+
+
+
         // sp sale best
         $bestSellingProducts = Order::select('order_detail')
             ->whereNotNull('order_detail')
@@ -139,8 +158,7 @@ class ProductsController extends Controller
             ->sortByDesc('total_sold')
             ->take(6)
             ->values();
-            return view('Products.detailproduct', compact('product', 'renderMenu', 'relatedProducts',));
-
+        return view('Products.detailproduct', compact('product', 'renderMenu', 'relatedProducts',));
     }
 
 

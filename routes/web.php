@@ -27,13 +27,13 @@ route::get('tim-kiem', 'WebcomeController@searchIndex')->name('searchIndex'); //
 Route::group(['prefix' => 'san-pham'], function () {
     Route::get('/', 'ProductsController@productShows')->name('productShows');
     Route::get('/loc-san-pham', 'ProductsController@sortProduct')->name('products.sort');
-    Route::get('/{slug}.html', 'ProductsController@productBycateID')->name('productBycateID');
-    Route::get('/loc-san-cates/{slug}}', 'ProductsController@softProductsByCate')->name('softProductsByCate'); //sortProductBycate--ajax
-    Route::get('/{slug}', 'ProductsController@productDetail')->name('productDetail');
+    Route::get('/{slug}.html', 'ProductsController@productDetail')->name('productDetail');
+    Route::get('/{slug}', 'ProductsController@productBycateID')->name('productBycateID');
+    Route::get('/loc-san-cates/{slug}', 'ProductsController@softProductsByCate')->name('softProductsByCate'); //sortProductBycate--ajax
 });
 
 
-// cart
+// cart.
 Route::get('gio-hang', 'CartController@cartshow')->name('cartshow'); //layouts client cart
 Route::get('addcart/{id}', 'CartController@addCart')->name('addCart'); //  add product to cart
 Route::get('addCartDetail/{id}', 'CartController@addCartDetail')->name('addCartDetail'); //  add product to cart
@@ -79,7 +79,7 @@ Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']
 });
 //admin-module
 // ,'CheckRole'
-Route::group(['middleware' => ['auth', 'verified','CheckRole'], 'prefix' => 'admin'], function () {
+Route::group(['middleware' => ['auth', 'verified', 'CheckRole'], 'prefix' => 'admin'], function () {
     include('AdminDashboard.php');
 });
 

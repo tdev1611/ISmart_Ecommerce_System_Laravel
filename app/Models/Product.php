@@ -13,7 +13,7 @@ class Product extends Model
 
     function category_product() {
 
-        return $this->belongsTo('App\Models\Category_product');
+        return $this->belongsTo('App\Models\Category_product',);
     
     }
 

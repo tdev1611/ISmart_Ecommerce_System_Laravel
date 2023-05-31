@@ -20,9 +20,6 @@ class AdminProductController extends Controller
         });
     }
 
-
-
-
     // category
     function category()
     {
@@ -65,11 +62,9 @@ class AdminProductController extends Controller
     // addProduct
     function addProduct()
     {
-
         $cat_products = Category_product::all();
         return view('admin.Products.add-product', compact('cat_products'));
     }
-
     // store
     function createProduct(Request $request)
     {
