@@ -112,7 +112,8 @@
                                         <td colspan="7">
                                             <div class="clearfix">
                                                 <p id="total-price" class="fl-right">Tổng giá:
-                                                    <span class="total-price total-price-cart-show">{{ Cart::total() }}đ</span>
+                                                    <span
+                                                        class="total-price total-price-cart-show">{{ Cart::total() }}đ</span>
                                                 </p>
                                             </div>
                                         </td>
@@ -169,7 +170,7 @@
                 // Lấy giá trị số lượng sản phẩm và rowId của sản phẩm tương ứng
                 var quantity = $(this).val();
                 var rowId = $(this).closest('tr').data(
-                'id'); // lấy giá trị của thuộc tính data-id từ thẻ HTML cha gần nhất có chứa nó. 
+                    'id'); // lấy giá trị của thuộc tính data-id từ thẻ HTML cha gần nhất có chứa nó. 
                 //Trong trường hợp này, thẻ HTML cha gần nhất có chứa thuộc tính data-id là thẻ tr,Do đó, $(this).closest('tr') sẽ trả về đối tượng jQuery của thẻ tr mà đang chứa phần tử được gọi, và .data('id') sẽ trả về giá trị của thuộc tính data-id của thẻ tr đó.
                 // let id = $(this).attr('data')
                 // Gửi yêu cầu Ajax đến route để update giỏ hàng
@@ -184,10 +185,15 @@
                     },
                     success: function(data) {
                         // Nếu update giỏ hàng thành công, cập nhật số lượng và giá tiền sản phẩm tương ứng
-                        $('tr[data-id="' + rowId + '"] .subtotal').text(data.subtotal);                    
-                        $('.total-price-lo').text(data.total); 
+                        $('tr[data-id="' + rowId + '"] .subtotal').text(data.subtotal);
+                        $('.total-price-lo').text(data.total);
                         $('.total-price-cart-show').text(data.total);
                         $('.qtys').text(data.cartCount); // só lượng ở layouts
+
+                        //show qty_per layout
+                        $('#qty_per[data-id="' + rowId + '"]').text(data.quantity);
+
+                        console.log($('#qty_per[data-id="' + rowId + '"]').text(data.quantity));
                     },
                     error: function(xhr, textStatus, errorThrown) {
                         // Xử lý lỗi nếu có

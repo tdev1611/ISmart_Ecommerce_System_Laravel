@@ -61,7 +61,7 @@
                                     <a href="{{ route('login') }}">{{ __('Login') }}</a>
                                 </li> --}}
                                 <li>
-                                    <a  href="{{ route('logout') }}"> LOG OUT</a>
+                                    <a href="{{ route('logout') }}"> LOG OUT</a>
                                 </li>
                             </ul>
                         </div>
@@ -128,10 +128,10 @@
                             </div>
                             <div id="btn-respon" class="fl-right"><i class="fa fa-bars" aria-hidden="true"></i>
                             </div>
-                            <a href="" title="giỏ hàng" id="cart-respon-wp" class="fl-right">
+                            {{-- <a href="" title="giỏ hàng" id="cart-respon-wp" class="fl-right">
                                 <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                                 <span id="num">2</span>
-                            </a>
+                            </a> --}}
                             <div id="cart-wp" class="fl-right">
                                 <div id="btn-cart">
                                     <a href="{{ route('cartshow') }}"> <i class="fa fa-shopping-cart "
@@ -144,47 +144,49 @@
                                         trong
                                         giỏ hàng
                                     </p>
-                                    @if (Cart::count())
-                                        <ul class="list-cart">
-                                            @foreach (Cart::content() as $item)
-                                                <li class="clearfix">
-                                                    <a href="{{ route('productDetail', $item->options->slug) }}"
-                                                        title="" class="thumb fl-left">
-                                                        <img src="{{ url($item->options->images) }}" alt="">
-                                                    </a>
-                                                    <div class="info fl-right">
+                                    <div id="show-dropcart">
+
+                                        @if (Cart::count())
+                                            <ul class="list-cart">
+                                                @foreach (Cart::content() as $item)
+                                                    <li class="clearfix">
                                                         <a href="{{ route('productDetail', $item->options->slug) }}"
-                                                            title=""
-                                                            class="product-name">{{ $item->name }}</a>
-                                                        <p class="price">
-                                                            {{ number_format($item->price, 0, '', '.') }}đ
-                                                        </p>
-                                                        <p class="qty">Số lượng: <span
-                                                                id="qty_per">{{ $item->qty }}</span>
-                                                        </p>
-                                                    </div>
-                                                </li>
-                                            @endforeach
-
-                                        </ul>
-                                        <div class="total-price clearfix">
-                                            <p class="title fl-left">Tổng:</p>
-                                            <p class="price fl-right total-price-lo">{{ Cart::total() }}đ</p>
-                                        </div>
-                                        <div class="action-cart clearfix">
-                                            <a href="{{ route('cartshow') }}" title="Giỏ hàng"
-                                                class="view-cart fl-left">Giỏ hàng</a>
-                                            <a href="{{ route('showCheckCount') }}" title="Thanh toán"
-                                                class="checkout fl-right">Thanh
-                                                toán</a>
-                                        </div>
-                                    @else
-                                        <img src="https://bizweb.dktcdn.net/100/440/012/themes/839260/assets/empty_cart.png?1653287637639"
-                                            alt="Trống giỏ hàng">
-                                        <span class="mess-order-header">Hãy thêm các sản phẩm vào giỏ hàng của
-                                            bạn!!!</span>
-                                    @endif
-
+                                                            title="" class="thumb fl-left">
+                                                            <img src="{{ url($item->options->images) }}"
+                                                                alt="">
+                                                        </a>
+                                                        <div class="info fl-right">
+                                                            <a href="{{ route('productDetail', $item->options->slug) }}"
+                                                                title=""
+                                                                class="product-name">{{ $item->name }}</a>
+                                                            <p class="price">
+                                                                {{ number_format($item->price, 0, '', '.') }}đ
+                                                            </p>
+                                                            <p class="qty">Số lượng: 
+                                                                <span id="qty_per" data-id="{{ $item->rowId }}">{{ $item->qty }}</span>
+                                                            </p>
+                                                        </div>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                            <div class="total-price clearfix">
+                                                <p class="title fl-left">Tổng:</p>
+                                                <p class="price fl-right total-price-lo">{{ Cart::total() }}đ</p>
+                                            </div>
+                                            <div class="action-cart clearfix">
+                                                <a href="{{ route('cartshow') }}" title="Giỏ hàng"
+                                                    class="view-cart fl-left">Giỏ hàng</a>
+                                                <a href="{{ route('showCheckCount') }}" title="Thanh toán"
+                                                    class="checkout fl-right">Thanh
+                                                    toán</a>
+                                            </div>
+                                        @else
+                                            <img src="https://bizweb.dktcdn.net/100/440/012/themes/839260/assets/empty_cart.png?1653287637639"
+                                                alt="Trống giỏ hàng">
+                                            <span class="mess-order-header">Hãy thêm các sản phẩm vào giỏ hàng của
+                                                bạn!!!</span>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -246,8 +248,7 @@
                             <p class="desc">Đăng ký với chung tôi để nhận được thông tin ưu đãi sớm nhất</p>
                             <div id="form-reg">
                                 <form method="get" action="">
-                                    <input type="email" name="email" id="email"
-                                        placeholder="email">
+                                    <input type="email" name="email" id="email" placeholder="email">
                                     <button type="submit" id="sm-reg">Đăng ký</button>
                                 </form>
                             </div>

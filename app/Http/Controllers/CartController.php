@@ -42,13 +42,13 @@ class CartController extends Controller
         // foreach ($cart as $qty) {
         //     $qty_per = $qty->qty;    // số lượng từng phần từ ở card layouts
         // }
-
+        $list_cart = view('cart.dropcart')->render(); // data for ajjax
         return response()->json([
             'success' => true,
             'cartCount' => $cartCount,
             'cartTotal' => $cartTotal,
             // 'qty_per' => $qty_per,
-
+            'list_cart' => $list_cart,
         ]);
     }
 
@@ -75,7 +75,7 @@ class CartController extends Controller
         ]);
         $cartCount = Cart::count(); // Số lượng sản phẩm trong giỏ hàng
         $cartTotal = Cart::total(); // Tổng giá trị của giỏ hàng
-
+        $list_cart = view('cart.dropcart')->render(); // data for ajjax
         // $cart = Cart::content();
         // foreach ($cart as $k => $v) {
         //     $qty_per = $k->qty;    // số lượng từng phần từ ở card layouts
@@ -86,7 +86,7 @@ class CartController extends Controller
             'cartCount' => $cartCount,
             'cartTotal' => $cartTotal,
             // 'qty_per' => $qty_per,
-
+            'list_cart' => $list_cart,
         ]);
     }
 
@@ -141,6 +141,7 @@ class CartController extends Controller
             'subtotal' => $subtotal,
             'total' => $total,
             'cartCount' => $cartCount,
+            'quantity' => $quantity,
 
         ]);
     }

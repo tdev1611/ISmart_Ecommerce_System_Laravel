@@ -251,6 +251,10 @@
                 success: function(response) {
                     $('.qtys').text(response.cartCount); // Tổng gio hang layouts
                     $('.total-price-lo').text(response.cartTotal);
+                           // show listcart
+                           var list_cart = response.list_cart;
+                    $('#show-dropcart').empty()
+                    $('#show-dropcart').append(list_cart)
                     $('#notification').show()
                     setTimeout(function() {
                         $('#notification').fadeOut('slow');

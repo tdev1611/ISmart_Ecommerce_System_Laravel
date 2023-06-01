@@ -256,6 +256,10 @@
                     $('.qtys').text(response.cartCount); // Tổng gio hang layouts
                     // $('#qty_per').text(response.qty_per)  // số lượng của mỗi sản phẩm layouts
                     $('.total-price-lo').text(response.cartTotal);
+                           // show listcart
+                           var list_cart = response.list_cart;
+                    $('#show-dropcart').empty()
+                    $('#show-dropcart').append(list_cart)
                     $('#notification').show()
                     // $('.list-cart').show()
                     setTimeout(function() {

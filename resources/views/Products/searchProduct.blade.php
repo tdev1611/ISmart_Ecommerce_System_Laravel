@@ -12,20 +12,20 @@
 @endsection
 @section('content')
     <div class="wp-inner">
-       @if ($products->count() > 0)
-        <div class="secion" id="breadcrumb-wp">
-            <div class="secion-detail">
-                <ul class="list-item clearfix">
-                    <li>
-                        <a href="{{ route('homes') }}" title="">Trang chủ</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('productShows') }}" title="">Điện thoại</a>
-                    </li>
-                </ul>
+        @if ($products->count() > 0)
+            <div class="secion" id="breadcrumb-wp">
+                <div class="secion-detail">
+                    <ul class="list-item clearfix">
+                        <li>
+                            <a href="{{ route('homes') }}" title="">Trang chủ</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('productShows') }}" title="">Điện thoại</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-        </div>
-       
+
             <div class="main-content fl-right">
                 <h3 style="font-size: 24px; margin-bottom:30px">Kết quả tìm kiếm cho từ khóa: <b>'{{ $searchIndex }}'</b>
                 </h3>
@@ -84,7 +84,7 @@
                         <h3 class="section-title">Bộ lọc</h3>
                     </div>
                     <div class="section-detail">
-                            {{-- <form method="POST" action="">
+                        {{-- <form method="POST" action="">
                                 <table>
                                     <thead>
                                         <tr>
@@ -176,23 +176,24 @@
                 </div>
             </div>
         @else
-        <div class="secion" id="breadcrumb-wp">
-            <div class="secion-detail">
-                <ul class="list-item clearfix">
-                    <li>
-                        <a href="{{ route('homes') }}" title="">Trang chủ</a>
-                    </li>
-                  
-                </ul>
+            <div class="secion" id="breadcrumb-wp">
+                <div class="secion-detail">
+                    <ul class="list-item clearfix">
+                        <li>
+                            <a href="{{ route('homes') }}" title="">Trang chủ</a>
+                        </li>
+
+                    </ul>
+                </div>
             </div>
-        </div>
             <style>
                 .not-found {
                     border-bottom: 1px solid #ddd;
                 }
+
                 .no-products-found {
                     background-color: #f9f9f9;
-                
+
                     border-radius: 5px;
                     padding: 20px;
                     text-align: center;
@@ -278,6 +279,10 @@
                 success: function(response) {
                     $('.qtys').text(response.cartCount); // Tổng gio hang layouts
                     $('.total-price-lo').text(response.cartTotal);
+                    // show listcart
+                    var list_cart = response.list_cart;
+                    $('#show-dropcart').empty()
+                    $('#show-dropcart').append(list_cart)
                     $('#notification').show()
                     setTimeout(function() {
                         $('#notification').fadeOut('slow');
