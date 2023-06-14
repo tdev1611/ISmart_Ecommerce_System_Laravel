@@ -295,3 +295,17 @@
         });
     </script>
 @endsection
+@php
+  
+function format_discount($price, $sale_price)
+{
+    if ($price != 0) {
+        $discount = (($sale_price - $price) / abs($price)) * 100;
+        $discount = round($discount, 2);
+        return $discount;
+    }
+    // Trường hợp giá trị ban đầu là 0, không thể tính phần trăm thay đổi
+    return null;
+}
+
+@endphp

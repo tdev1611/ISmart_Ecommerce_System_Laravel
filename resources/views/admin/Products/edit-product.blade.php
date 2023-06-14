@@ -99,10 +99,19 @@
                                 @enderror
                             </div>
                             <div class="form-group">
-                                <label for="price">Giá</label>
+                                <label for="price">Giá gốc</label>
                                 <input class="form-control" type="number" min=0 name="price" id="price"
                                     value="{{ $product->price }}">
                                 @error('price')
+                                    <span class="text-danger"> {{ $message }}</span>
+                                @enderror
+                            </div>
+                            {{-- sale --}}
+                            <div class="form-group">
+                                <label for="sale_price">Giá-sale</label>
+                                <input class="form-control" type="number" min=0 name="sale_price" id="sale_price"
+                                    value="{{ $product->sale_price }}">
+                                @error('sale_price')
                                     <span class="text-danger"> {{ $message }}</span>
                                 @enderror
                             </div>

@@ -34,6 +34,7 @@ class WebcomeController extends Controller
                     'product_id' => $orders[0]['id'],
                     'name' => $orders[0]['name'],
                     'price' => $orders[0]['price'],
+                    // 'price' => $orders[0]['price'],
                     'slug' => $orders[0]['options']['slug'],
                     'images' => $orders[0]['options']['images'],
                     'total_sold' => collect($orders)->sum('qty'),

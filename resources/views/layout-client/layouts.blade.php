@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 
@@ -32,6 +33,26 @@
             display: block;
             margin-top: 20px;
             font-weight: bold;
+        }
+        .li-product {
+            position: relative;
+        }
+
+        .discount-product {
+            background: rgba(255, 212, 36, .9);
+            right: 0;
+            position: absolute;
+            top: 0;
+        }
+
+        .discount {
+            text-align: center;
+
+            font-weight: 400;
+            line-height: .8125rem;
+            color: #ee4d2d;
+            text-transform: uppercase;
+            font-size: .75rem;
         }
     </style>
     <div id="site">
@@ -324,6 +345,8 @@
         </script>
 
         @yield('ajax')
+
 </body>
 
 </html>
+

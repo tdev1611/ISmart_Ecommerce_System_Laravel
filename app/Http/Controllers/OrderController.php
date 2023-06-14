@@ -10,22 +10,22 @@ use App\Mail\OrderSuccess;
 use Illuminate\Database\DBAL\TimestampType;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
-
+use Illuminate\Support\Facades\Session;
 class OrderController extends Controller
 {
     //
 
     function checkOut()
     {
-        $infoProduct =  Cart::content();
+        $infoProduct = Cart::content();
         // user
-     
-        return view('cart.checkout', compact('infoProduct',));
+
+        return view('cart.checkout', compact('infoProduct', ));
     }
     // xử lý order
     function payment(Request $request)
     {
-        $cart =  Cart::content();
+        $cart = Cart::content();
         // foreach ($cart as $a) {
         //     $code_product = $a->options->code;
         // }
@@ -41,12 +41,21 @@ class OrderController extends Controller
                 'phone' => 'required|numeric|min:9'
             ]
         );
-        $data['note'] = $request->input('note');
+
+        // Lưu thông tin địa chỉ và số điện thoại vào session
+
+        Session::put('fullname', $request->input('fullname'));
+        Session::put('email', $request->input('email'));
+        Session::put('phone', $request->input('phone'));
+        Session::put('address', $request->input('address'));
+        Session::put('note', $request->input('note'));
+        
+        // $data['note'] = $request->input('note');
         $code = 'UNI#' . Str::random(6);
-        $data['code'] = $code;  // code order
+        $data['code'] = $code; // code order
         $total = Cart::total();
         // $data['code_product'] = $code_product;   // code_product
-        $data['customer_id'] =   $infoUser->id;
+        $data['customer_id'] = $infoUser->id;
         $data['totalCart'] = $total; // tổng sản phẩm
         $data['order_detail'] = $cart_json_encode;
         $data['created_at'] = date_format(now(), "Y/m/d H:i:s");

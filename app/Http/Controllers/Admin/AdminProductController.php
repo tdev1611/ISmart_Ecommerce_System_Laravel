@@ -74,17 +74,27 @@ class AdminProductController extends Controller
                 'name' => 'required',
                 'slug' => 'required|unique:products,slug',
                 'price' => 'required|numeric',
+                'sale_price' => 'numeric|lt:price',
                 'desc' => 'required',
                 'file' => 'required',
                 'detail' => 'required',
                 'featured_products' => 'required',
                 'list_images' => 'required',
-                'category_product_id' => 'required',
+                'category_product_id' => 'required|exists:category_products,id',
+                // 'category_product_id' => ''
+
             ],
-            [],
+            [
+                'lt'=> 'Giá sale phải nhỏ hơn giá gốc'
+            ],
             [
                 'name' => 'Tên sản phẩm',
                 'slug' => 'slug',
+                'sale_price' => 'giá sale',
+                'list_images' => 'Ảnh chi tiết',
+                'file' => 'Ảnh',
+                'detail' => 'Chi tiết sản phẩm',
+
             ]
         );
         $code = 'UNI#' . Str::random(6);
@@ -130,7 +140,7 @@ class AdminProductController extends Controller
         //     ->select('category_products.name', DB::raw('count(category_products.id) as count'))
         //     ->groupBy('category_products.name')
         //     ->get();
-        return  view('admin.Products.list-product', compact('products', 'cat_products'));
+        return view('admin.Products.list-product', compact('products', 'cat_products'));
     }
 
     //delte
@@ -149,29 +159,36 @@ class AdminProductController extends Controller
         $cat_products = Category_product::all();
         return view('admin.Products.edit-product', compact('product', 'cat_products'));
     }
-    function  updateProduct(Request $request, $id)
+    function updateProduct(Request $request, $id)
     {
-        
-   
+
+
         $request->validate(
             [
                 'name' => 'required',
-                'slug' => 'required|unique:products,slug,'. Product::find($id)->id ,
+                'slug' => 'required|unique:products,slug,' . Product::find($id)->id,
                 'price' => 'required|numeric',
+                'sale_price' => 'numeric|lt:price',
                 'desc' => 'required',
                 'detail' => 'required',
                 'status' => 'required',
                 'featured_products' => 'required',
-                'category_product_id' => 'required',
+                'category_product_id' => 'required|exists:category_products,id',
             ],
-            [],
+            [
+                'lt'=> 'Giá sale phải nhỏ hơn giá gốc'
+            ],
             [
                 'name' => 'Tên sản phẩm',
                 'slug' => 'slug',
+                'sale_price' => 'giá sale',
+                'list_images' => 'Ảnh chi tiết',
+                'file' => 'Ảnh',
+                'detail' => 'Chi tiết sản phẩm',
             ]
         );
 
-        $update = $request->only('name', 'slug', 'price', 'desc', 'detail', 'category_product_id', 'status', 'featured_products', 'list_images');
+        $update = $request->only('name', 'slug', 'price','sale_price', 'desc', 'detail', 'category_product_id', 'status', 'featured_products', 'list_images');
         // mitil files
         if ($request->hasFile('list_images')) {
             $list_images = [];
@@ -207,17 +224,18 @@ class AdminProductController extends Controller
         $list_checks = $request->list_check;
         if ($list_checks) {
             foreach ($list_checks as $k => $id) {
-            };
+            }
+            ;
             //destroy
             $action = $request->action;
             if ($action == 'delete') {
                 $page = Product::destroy($list_checks);
                 return redirect(route('admin.listProduct'))->with('success', 'Đã xóa thành công');
             } else {
-                return  redirect(route('admin.listProduct'))->with('warning', 'Vui lòng chọn phương thức');
+                return redirect(route('admin.listProduct'))->with('warning', 'Vui lòng chọn phương thức');
             }
         } else {
-            return  redirect(route('admin.listProduct'))->with('warning', 'Vui lòng chọn bản ghi');
+            return redirect(route('admin.listProduct'))->with('warning', 'Vui lòng chọn bản ghi');
         }
     }
 }

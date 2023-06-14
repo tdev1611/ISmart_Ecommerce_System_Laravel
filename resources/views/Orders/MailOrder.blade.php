@@ -45,7 +45,8 @@
                                     <td valign="top"
                                         style="padding:3px 9px 9px 9px;border-top:0;border-left:0;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#444;line-height:18px;font-weight:normal">
                                         {{ $data['fullname'] }}<br> {{ $data['address'] }}
-                                        <br> <br><br> Đt: {{ $data['phone'] }}
+                                        <br> Đt: {{ $data['phone'] }}
+                                        <br> Ghi chú : {{ $data['note'] ? $data['note'] : 'Không có' }}
                                     </td>
                                 </tr>
                                 <tr>

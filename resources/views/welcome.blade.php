@@ -82,9 +82,20 @@
                                     </a>
                                     <a href="{{ route('productDetail', $item->slug) }}" title=""
                                         class="product-name">{{ $item->name }}</a>
+                                    @if ($item->sale_price !== 0.0)
+                                        <div class="discount-product">
+                                            <p class="discount">
+                                                {{ format_discount($item->price, $item->sale_price) }} %
+                                            </p>
+                                            <p class="" style="color: #fff">giảm</p>
+                                        </div>
+                                    @endif
                                     <div class="price">
                                         <span class="new">{{ number_format($item->price, 0, '', '.') }}đ </span>
-                                        <span class="old">6.190.000đ</span>
+                                        @if ($item->sale_price !== 0.0)
+                                            <span class="old">{{ number_format($item->sale_price, 0, '', '.') }}
+                                                đ</span>
+                                        @endif
                                     </div>
                                     <div class="action clearfix" style="display: flex; justify-content: space-between;">
                                         <a href="" data-id="{{ $item->id }}" title="Thêm giỏ hàng"
@@ -99,7 +110,9 @@
                         </ul>
                     </div>
                 </div>
+                {{-- product-sale --}}
 
+                {{-- end-product-sale --}}
                 @foreach ($categories as $category)
                     <div class="section" id="list-product-wp">
                         <div class="section-head">
@@ -111,7 +124,7 @@
                         <div class="section-detail">
                             <ul class="list-item clearfix">
                                 @foreach ($category->productsWCRecursive() as $product)
-                                    <li style="height: 276px">
+                                    <li style="height: 276px" class="li-product">
                                         {{-- {{ route('productDetail', $product->slug) }} --}}
                                         <a href="{{ route('productDetail', $product->slug) }}" title=""
                                             class="thumb">
@@ -120,10 +133,46 @@
                                         <a href="{{ route('productDetail', $product->slug) }}" title=""
                                             class="product-name">{{ $product->name }}</a>
 
-                                        <div class="price">
-                                            <span class="new">{{ number_format($product->price, 0, '', '.') }} đ</span>
-                                            <span class="old">8.990.000đđ</span>
-                                        </div>
+                                        @if ($product->sale_price !== 0.0)
+                                            <div class="discount-product">
+                                                <p class="discount">
+                                                    {{ format_discount($product->price, $product->sale_price) }} %
+                                                </p>
+                                                <p class="" style="color: #fff">giảm</p>
+                                            </div>
+                                        @endif
+
+                                        {{-- <div class="price">
+                                            <span class="new">{{ number_format($product->sale_price, 0, '', '.') }}
+                                                đ</span>
+                                            @if ($product->sale_price !== 0.0)
+                                                <span class="old">{{ number_format($product->price, 0, '', '.') }}
+                                                    đ</span>
+                                            @endif
+                                        </div> --}}
+                                        @if ($product->sale_price !== 0.0)
+                                            <div class="price">
+                                                <span class="new">{{ number_format($product->sale_price, 0, '', '.') }}
+                                                    đ</span>
+                                                @if ($product->sale_price !== 0.0)
+                                                    <span class="old">{{ number_format($product->price, 0, '', '.') }}
+                                                        đ</span>
+                                                @endif
+                                            </div>
+                                        @else
+                                            <div class="price">
+                                                @if ($product->sale_price !== 0.0)
+                                                    <span class="old">{{ number_format($product->price, 0, '', '.') }}
+                                                        đ</span>
+                                                @else
+                                                    <span class="new">{{ number_format($product->price, 0, '', '.') }}
+                                                        đ</span>
+                                                @endif
+                                            </div>
+                                        @endif
+                                      
+
+
                                         <div class="action clearfix" style="display: flex; justify-content: space-between;">
                                             {{-- {{ route('cart.add', $product->id) }} --}}
                                             <a href="" data-id="{{ $product->id }}" title="Thêm giỏ hàng"
@@ -134,7 +183,7 @@
                                         </div>
                                     </li>
                                 @endforeach
-                               
+
 
                             </ul>
                         </div>
@@ -162,16 +211,22 @@
                         <ul class="list-item">
                             @foreach ($bestSellingProducts as $item)
                                 <li class="clearfix">
-                                    <a href="{{ route('productDetail', $item['slug']) }}" title="" class="thumb fl-left">
+                                    <a href="{{ route('productDetail', $item['slug']) }}" title=""
+                                        class="thumb fl-left">
                                         <img src="{{ url($item['images']) }}" alt="">
                                     </a>
                                     <div class="info fl-right">
-                                        <a href="{{ route('productDetail', $item['slug']) }}" title="" class="product-name">{{$item['name'] }}</a>
+                                        <a href="{{ route('productDetail', $item['slug']) }}" title=""
+                                            class="product-name">{{ $item['name'] }}</a>
                                         <div class="price">
-                                            <span class="new">{{number_format($item['price'],0,'','.') }} đ</span>
-                                            <span class="old">17.190.000đ</span>
+                                            <span class="new">{{ number_format($item['price'], 0, '', '.') }} đ</span>
+                                            {{-- @if ($item->sale_price !== 0.0)
+                                                <span class="old">{{ number_format($item->sale_price, 0, '', '.') }}
+                                                    đ</span>
+                                            @endif --}}
                                         </div>
-                                        <a href="{{ route('buyNow', $item['product_id']) }}" title="" class="buy-now">Mua ngay</a>
+                                        <a href="{{ route('buyNow', $item['product_id']) }}" title=""
+                                            class="buy-now">Mua ngay</a>
                                     </div>
                                 </li>
                             @endforeach
@@ -236,8 +291,8 @@
                 success: function(response) {
                     $('.qtys').text(response.cartCount);
                     $('.total-price-lo').text(response.cartTotal);
-                           // show listcart
-                           var list_cart = response.list_cart;
+                    // show listcart
+                    var list_cart = response.list_cart;
                     $('#show-dropcart').empty()
                     $('#show-dropcart').append(list_cart)
                     $('#notification').show()
@@ -252,3 +307,18 @@
         });
     </script>
 @endsection
+
+@php
+    
+    function format_discount($price, $sale_price)
+    {
+        if ($price != 0) {
+            $discount = (($sale_price - $price) / abs($price)) * 100;
+            $discount = round($discount, 2);
+            return $discount;
+        }
+        // Trường hợp giá trị ban đầu là 0, không thể tính phần trăm thay đổi
+        return null;
+    }
+    
+@endphp

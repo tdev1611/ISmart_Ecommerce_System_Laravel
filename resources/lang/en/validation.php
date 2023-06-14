@@ -168,7 +168,8 @@ return [
         'desc'=> 'Mô tả',
         'fullname'=>'Họ tên',
         'phone'=>'Số điện thoại',
-        'address'=>'Địa chỉ'
+        'address'=>'Địa chỉ',
+        
     ],
 
 ];

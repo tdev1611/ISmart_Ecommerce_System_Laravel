@@ -20,6 +20,7 @@
             margin-bottom: 8px;
             display: block;
         }
+        
     </style>
 @endsection
 @section('content')
@@ -76,28 +77,40 @@
                     </ul>
                     
                 </div> --}}
-             
+
                 @foreach ($categoriess as $category)
                     <div class="section" id="list-product-wp">
                         <div class="section-head">
                             {{-- danh muc co sp thi duoc xuât lên --}}
                             {{-- @if ($category->productsRecursive()->count() > 0) --}}
-                            <h3 style="margin: 10px 0px 38px 0px" class="section-title" id="categoryName">{{ $category->name }}</h3>
+                            <h3 style="margin: 10px 0px 38px 0px" class="section-title" id="categoryName">
+                                {{ $category->name }}</h3>
                             {{-- @endif --}}
                         </div>
                         <div class="section-detail">
                             <ul class="list-item clearfix" id="filteredResults">
                                 @foreach ($category->productsRecursive() as $product)
-                                    <li style="height: 276px">
+                                    <li style="height: 276px" class="li-product">
                                         <a href="{{ route('productDetail', $product->slug) }}" title=""
                                             class="thumb">
                                             <img src="{{ url($product->images) }}">
                                         </a>
                                         <a href="{{ route('productDetail', $product->slug) }}" title=""
                                             class="product-name">{{ $product->name }}</a>
+                                        @if ($product->sale_price !== 0.0)
+                                            <div class="discount-product">
+                                                <p class="discount">
+                                                    {{ format_discount($product->price, $product->sale_price) }} %
+                                                </p>
+                                                <p class="" style="color: #fff">giảm</p>
+                                            </div>
+                                        @endif
                                         <div class="price">
-                                            <span class="new">{{ number_format($product->price, 0, '', '.') }} đ</span>
-                                            <span class="old">8.990.000đđ</span>
+                                            <span class="new">{{ number_format($product->price, 0, '', '.') }}đ </span>
+                                            @if ($product->sale_price !== 0.0)
+                                                <span class="old">{{ number_format($product->sale_price, 0, '', '.') }}
+                                                    đ</span>
+                                            @endif
                                         </div>
                                         <div class="action clearfix">
                                             <a href="{{ route('addCart', $product->id) }}" title="Thêm giỏ hàng"
@@ -108,7 +121,7 @@
                                         </div>
                                     </li>
                                 @endforeach
-                                
+
                             </ul>
                         </div>
                     </div>
@@ -134,7 +147,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="section" id="filter-product-wp">
+            {{-- <div class="section" id="filter-product-wp">
                 <div class="section-head">
                     <h3 class="section-title">Bộ lọc</h3>
                 </div>
@@ -173,7 +186,7 @@
 
                     </form>
                 </div>
-            </div>
+            </div> --}}
             <div class="section" id="banner-wp">
                 <div class="section-detail">
                     <a href="?page=detail_product" title="" class="thumb">
@@ -232,8 +245,8 @@
                 success: function(response) {
                     $('.qtys').text(response.cartCount); // Tổng gio hang layouts
                     $('.total-price-lo').text(response.cartTotal);
-                           // show listcart
-                           var list_cart = response.list_cart;
+                    // show listcart
+                    var list_cart = response.list_cart;
                     $('#show-dropcart').empty()
                     $('#show-dropcart').append(list_cart)
                     $('#notification').show()
@@ -266,10 +279,10 @@
                         $('#filteredResults').empty();
                         $('#categoryName').empty();
                         $('#filteredResults').append(html);
-                 
-                     
+
+
                         //     sortdProducts.forEach(function(product) {
-                            // product.name
+                        // product.name
                         //   }
                     },
                     error: function(xhr, status, error) {
@@ -283,3 +296,17 @@
 
     <script></script>
 @endsection
+@php
+    
+    function format_discount($price, $sale_price)
+    {
+        if ($price != 0) {
+            $discount = (($sale_price - $price) / abs($price)) * 100;
+            $discount = round($discount, 2);
+            return $discount;
+        }
+        // Trường hợp giá trị ban đầu là 0, không thể tính phần trăm thay đổi
+        return null;
+    }
+    
+@endphp

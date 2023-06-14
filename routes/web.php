@@ -49,8 +49,8 @@ Route::post('/add-to-cartDet', 'CartController@addCartDetailAjax')->name('cart.a
 
 
 // order 
+Route::get('thanh-toan', 'OrderController@checkOut')->name('showCheckCount'); // view
 Route::group(['middleware' => ['auth', 'verified']], function () {
-    Route::get('thanh-toan', 'OrderController@checkOut')->name('showCheckCount'); // view
     Route::post('payment', 'OrderController@payment')->name('payment'); // view
     Route::get('dat-hang-thanh-cong', 'OrderController@orderSuccess')->name('thanksOrder');
 });

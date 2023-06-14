@@ -1,4 +1,6 @@
 @extends('layout-client.layouts')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 @section('content')
     <style>
         #order-success #order-end {
@@ -21,7 +23,37 @@
             margin-top: 24px;
             margin-left: 20px;
         }
+
+        .text-danger {
+            color: red
+        }
+
+        /* loading */
+
+        #loading-overlay {
+
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+
+        }
+
+        .loading-text {
+            position: absolute;
+            top: 40%;
+            left: 34%;
+            font-size: 20px;
+            color: white;
+        }
     </style>
+    
     <div id="main-content-wp" class="checkout-page">
         <div class="section" id="breadcrumb-wp">
             <div class="wp-inner">
@@ -50,17 +82,18 @@
                                 <div class="form-row clearfix">
                                     <div class="form-col fl-left">
                                         <label for="fullname">Họ tên</label>
-                                        <input type="text" name="fullname" id="fullname"
-                                            placeholder="Họ tên người nhận">
+                                        <input type="text" name="fullname" id="fullname" placeholder="Họ tên người nhận"
+                                            value="{{ old('fullname', session('fullname')) }}">
                                         @error('fullname')
                                             <p class="text-danger">{{ $message }}</p>
                                         @enderror
                                     </div>
                                     <div class="form-col fl-right">
                                         <label for="email">Email</label>
-                                        <input type="email" name="email" id="email" placeholder="abc@gmail.com">
+                                        <input type="email" name="email" id="email" placeholder="abc@gmail.com"
+                                            value="{{ old('email', session('email')) }}">
                                         @error('email')
-                                            <p class="text-danger">{{ $message }}</p>
+                                            <p class="text-danger"> {{ $message }}</p>
                                         @enderror
                                     </div>
                                 </div>
@@ -68,14 +101,16 @@
                                     <div class="form-col fl-left">
                                         <label for="address">Địa chỉ</label>
                                         <input type="text" name="address" id="address"
-                                            placeholder="Ví dụ: số nhà A, Phường B">
+                                            placeholder="Ví dụ: số nhà A, Phường B"
+                                            value="{{ old('address', session('address')) }}">
                                         @error('address')
-                                            <p class="text-danger">{{ $message }}</p>
+                                            <p class="text-danger"> {{ $message }}</p>
                                         @enderror
                                     </div>
                                     <div class="form-col fl-right">
                                         <label for="phone">Số điện thoại</label>
-                                        <input type="tel" name="phone" id="phone" placeholder="1233749">
+                                        <input type="tel" name="phone" id="phone" placeholder="1233749"
+                                            value="{{ old('phone', session('phone')) }}" pattern="[0-9]{10}">
                                         @error('phone')
                                             <p class="text-danger">{{ $message }}</p>
                                         @enderror
@@ -87,7 +122,7 @@
                                 <div class="form-row">
                                     <div class="form-col">
                                         <label for="notes">Ghi chú</label>
-                                        <textarea name="note" placeholder="Thông tin chi tiết"></textarea>
+                                        <textarea name="note" placeholder="Thông tin chi tiết"> {{ old('note') }}</textarea>
                                     </div>
                                 </div>
                             </form>
@@ -151,7 +186,39 @@
                 <a href="{{ route('homes') }}" class="btn-check-mail">Về trang chủ</a>
             </div>
         @endif
-
-
     </div>
+
+    <div id="loading-overlay">
+        <div class="loading-text">Đang gửi thông tin đơn hàng đến email của bạn!
+            <div class="spinner-border text-warning">
+                <span class="sr-only">Loading</span>
+            </div>
+        </div>
+      
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#order-now').click(function() {
+                //hiệu ứng chờ
+                $('#loading-overlay').show();
+              
+                $.ajax({
+                    url: "{{ route('payment') }}",
+                    type: 'POST',
+                    success: function(response) {
+                       
+                        // Trả về view 'thank-order' 
+                        $('#loading-overlay').hide();
+                        window.location.href = '/dat-hang-thanh-cong';
+                    },
+                    error: function(xhr) {
+                      
+                    }
+                });
+            });
+        });
+    </script>
+
+
 @endsection

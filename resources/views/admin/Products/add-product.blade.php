@@ -51,18 +51,21 @@
             align-items: center;
             justify-content: center
         }
+
         #image-list li {
-            margin-right: 5px;  
+            margin-right: 5px;
         }
+
         .img_list {
             width: 100%;
             height: auto;
         }
+
         #image_show {
-    width: 100px;
-    height: 100px;
-    border: 2px solid tan;
-}
+            width: 100px;
+            height: 100px;
+            border: 2px solid tan;
+        }
     </style>
 @endsection
 
@@ -99,10 +102,19 @@
                                 @enderror
                             </div>
                             <div class="form-group">
-                                <label for="price">Giá</label>
+                                <label for="price">Giá gốc</label>
                                 <input class="form-control" type="number" min=0 name="price" id="price"
                                     value="{{ old('price') }}">
                                 @error('price')
+                                    <span class="text-danger"> {{ $message }}</span>
+                                @enderror
+                            </div>
+                            {{-- sale --}}
+                            <div class="form-group">
+                                <label for="sale_price">Giá-sale</label>
+                                <input class="form-control" type="number" min=0 name="sale_price" id="sale_price"
+                                    value="{{ old('sale_price') }}">
+                                @error('sale_price')
                                     <span class="text-danger"> {{ $message }}</span>
                                 @enderror
                             </div>
@@ -204,8 +216,6 @@
                             </label>
                         </div>
                     </div>
-
-
 
                     <button type="submit" class="btn btn-primary">Thêm mới</button>
                 </form>
