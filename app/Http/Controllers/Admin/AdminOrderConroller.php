@@ -27,7 +27,7 @@ class AdminOrderConroller extends Controller
         $orders = Order::orderBy('created_at', 'DESC')->where('code', 'like', '%' . $key . '%')
             ->orWhere('fullname', 'like', '%' . $key . '%')
             ->orWhere('phone', 'like', '%' . $key . '%')
-            ->paginate(50);
+            ->paginate(20);
         // success processing waitprocessing cancel : 3-2-1-4
         if ($status == 'success') {
             $orders = Order::where('status', 3)->Where('code', 'like', '%' . $key . '%')
