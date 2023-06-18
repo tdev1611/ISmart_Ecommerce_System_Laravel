@@ -19,8 +19,14 @@ use Illuminate\Http\Request;
 //client
 
 Route::get('/', 'WebcomeController@indexx')->name('homes');  // trang chủ
+Route::get('tim-kiem', 'WebcomeController@searchIndex')->name('searchIndex'); // index
 
-route::get('tim-kiem', 'WebcomeController@searchIndex')->name('searchIndex'); // index
+
+
+Route::post('products/{product}', 'CommentController@store')->name('comment')->middleware('auth');
+Route::post('products-reply/{commentId}', 'CommentController@relystore')->name('relycomment')->middleware('auth');
+
+
 
 
 // product, productDetail, danh mục
@@ -30,8 +36,11 @@ Route::group(['prefix' => 'san-pham'], function () {
     Route::get('/{slug}.html', 'ProductsController@productDetail')->name('productDetail');
     Route::get('/{slug}', 'ProductsController@productBycateID')->name('productBycateID');
     Route::get('/loc-san-cates/{slug}', 'ProductsController@softProductsByCate')->name('softProductsByCate'); //sortProductBycate--ajax
-});
+    // commnent
 
+    // Route::post('products/{product}/comments','ProductsController@comment')->name('comment')->middleware('auth');
+
+});
 
 // cart.
 Route::get('gio-hang', 'CartController@cartshow')->name('cartshow'); //layouts client cart
@@ -45,8 +54,6 @@ Route::post('cart/update', 'CartController@update')->name('cart.updateAjax');
 
 Route::post('/add-to-cart', 'CartController@addToCart')->name('cart.add'); //add cart = ajax qty =1 
 Route::post('/add-to-cartDet', 'CartController@addCartDetailAjax')->name('cart.addDetailajax'); //add cart = ajax qty = qty
-
-
 
 // order 
 Route::get('thanh-toan', 'OrderController@checkOut')->name('showCheckCount'); // view

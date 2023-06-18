@@ -11,8 +11,8 @@ class BlogController extends Controller
 
     function blogShows(){
 
+      
          $posts = Post::paginate(5);
-   
          $bestSellingProducts = Order::select('order_detail')
              ->whereNotNull('order_detail')
              ->get()

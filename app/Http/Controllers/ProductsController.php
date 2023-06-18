@@ -4,28 +4,28 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category_product;
-use App\Models\Product;
 use App\Models\Order;
-use Illuminate\Support\Facades\Response;
+use App\Models\User;
+use App\Models\Product;
+use App\Models\Comment;
+
+// use Illuminate\Support\Facades\Response;
+
 
 class ProductsController extends Controller
 {
     //
-
     // xuất sp danh mục category
     function productBycateID(Request $request)
     {
-
         $slug = $request->route('slug');
         $categories = Category_product::where('status', 1)->whereNull('cat_parent')->get();
-        $renderMenu = $this->renderCategory($categories);   // get cate menu
+        $renderMenu = $this->renderCategory($categories); // get cate menu
         // get san pham theo danh mục
         // cách 1 
         $category = Category_product::where('slug', $slug)->first();
-
         if ($category) {
             $categoryId = $category->id;
-
             $sub_categorys = Category_product::where('cat_parent', $categoryId)->get();
             $subCategoryIds = $sub_categorys->pluck('id')->toArray();
             $productByCate = Product::where('category_product_id', $categoryId)->orWhereIn('category_product_id', $subCategoryIds)->where('status', 1)->get();
@@ -33,7 +33,6 @@ class ProductsController extends Controller
             abort(404);
         }
         //return json_encode($category);
-
 
         // ----- Cách 2: - Thiết lập quan hệ trong moddels
         // $category = Category_product::where('slug', $slug)->first();
@@ -103,19 +102,26 @@ class ProductsController extends Controller
     {
         $slug = $request->route('slug');
 
-
         $categories = Category_product::where('status', 1)->whereNull('cat_parent')->get();
-        $renderMenu = $this->renderCategory($categories);   // get cate menu
+        $renderMenu = $this->renderCategory($categories); // get cate menu
 
         $product = Product::where('slug', $slug)->first();
+
         if ($product) {
             $categoryId = $product->category_product_id;
-            $relatedProducts =  Product::where('category_product_id', $categoryId)->get();
+            $relatedProducts = Product::where('category_product_id', $categoryId)->get();
         } else {
             abort(404);
         }
-        // cách 3:
 
+        // cmt
+              $comments = $product->comments()->whereNull('parent_id')->paginate(5);
+
+        // return $comments = Comment::with('product')->get();
+
+
+
+        // cách 3:
         // product same
         //  danh mục chứa sản phẩm
         #C1 : 
@@ -137,7 +143,8 @@ class ProductsController extends Controller
 
 
 
-        // sp sale best
+
+        //  sale best
         $bestSellingProducts = Order::select('order_detail')
             ->whereNotNull('order_detail')
             ->get()
@@ -158,16 +165,40 @@ class ProductsController extends Controller
             ->sortByDesc('total_sold')
             ->take(6)
             ->values();
-        return view('Products.detailproduct', compact('product', 'renderMenu', 'relatedProducts',));
+        return view('Products.detailproduct', compact('product', 'renderMenu', 'relatedProducts' ,'comments',));
     }
 
+
+    // function comment(Request $request, Product $product)
+    // {
+
+    //     $user = Auth::user();
+
+    //     $request->validate(
+    //         [
+    //             'comment' => 'required'
+    //         ],
+    //         [],
+    //         [
+    //             'comment' => 'Bình luận',
+    //         ]
+    //     );
+    //     $content = $request->comment; //  $slug = $request->route('slug');
+    //     $comment = Comment::create([
+    //         'user_id' => $user->id,
+    //         'product_id' => $product->id,
+    //         'content' => $content
+    //     ]);
+
+    //     return redirect()->back();
+    // }
 
     // --- --- --- --- --- --- --- --- --- ----- --- --- --- --- --- --- ----- --- --- --- --- --- --- ---
     // show tab product
     function productShows(Request $request)
     {
-        $categories = Category_product::where('status', 1)->whereNull('cat_parent')->get();  // duyệt menu
-        $renderMenu = $this->renderCategory($categories);   // get cate menu
+        $categories = Category_product::where('status', 1)->whereNull('cat_parent')->get(); // duyệt menu
+        $renderMenu = $this->renderCategory($categories); // get cate menu
         $categoriess = Category_product::where('status', 1)->whereNull('cat_parent')->paginate(2); // duyệt sản phẩm và phân trang
 
 
@@ -176,18 +207,18 @@ class ProductsController extends Controller
         // 
         //    $categoriess = Category_product::with('product')->get();
 
-        return view('Products.showProduct', compact('renderMenu', 'categoriess',));
+        return view('Products.showProduct', compact('renderMenu', 'categoriess', ));
     }
 
     // sortProduct product-show
     function sortProduct(Request $request)
     {
-        $categories = Category_product::where('status', 1)->whereNull('cat_parent')->get();  // duyệt menu
-        $renderMenu = $this->renderCategory($categories);   // get cate menu
+        $categories = Category_product::where('status', 1)->whereNull('cat_parent')->get(); // duyệt menu
+        $renderMenu = $this->renderCategory($categories); // get cate menu
 
         // $sort = $_GET['sort'];
         $sort = $request->input('sort');
-        $products  = Product::query();
+        $products = Product::query();
         if ($sort === 'name_asc') {
             $products->orderBy('name', 'asc');
         } elseif ($sort === 'name_desc') {

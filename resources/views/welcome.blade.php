@@ -126,8 +126,8 @@
                                 @foreach ($category->productsWCRecursive() as $product)
                                     <li style="height: 276px" class="li-product">
                                         {{-- {{ route('productDetail', $product->slug) }} --}}
-                                        <a href="{{ route('productDetail', $product->slug) }}" title=""
-                                            class="thumb">
+                                        <a href="{{ route('productDetail',  $product->slug) }}"
+                                            title="" class="thumb">
                                             <img src="{{ url($product->images) }}">
                                         </a>
                                         <a href="{{ route('productDetail', $product->slug) }}" title=""
@@ -170,7 +170,7 @@
                                                 @endif
                                             </div>
                                         @endif
-                                      
+
 
 
                                         <div class="action clearfix" style="display: flex; justify-content: space-between;">

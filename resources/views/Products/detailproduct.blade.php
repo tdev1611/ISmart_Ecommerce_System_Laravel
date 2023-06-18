@@ -1,6 +1,10 @@
 @extends('layout-client.layouts')
 @section('style_css')
     <style>
+        .text-danger {
+            color: red;
+        }
+
         #main-thumb {
             position: relative;
             padding-bottom: 100%
@@ -19,12 +23,15 @@
             border-radius: 5px;
             text-transform: uppercase;
         }
+
         #detail-product-wp .add-cart:hover {
             background: #ee5f4a;
         }
+
         #detail-product-wp .add-cart {
             background: gray;
         }
+
         .section-detail {
 
             overflow: hidden;
@@ -53,6 +60,163 @@
         #expandButton:hover {
             background: #bc341f;
         }
+
+        /* cmt-reply */
+        .comment-section {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .comment-list {
+            margin-top: 20px;
+        }
+
+        .comment {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            position: relative;
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .comment-author {
+            font-weight: bold;
+        }
+
+        .comment-date {
+            color: #888;
+        }
+
+        .comment-content {
+            margin-top: 5px;
+        }
+
+        .reply-list {
+            margin-top: 10px;
+            margin-left: 20px;
+            border-left: 1px solid #ddd;
+            padding-left: 10px;
+        }
+
+        .reply {
+            margin-bottom: 10px;
+        }
+
+        .reply-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .reply-author {
+            font-weight: bold;
+        }
+
+        .reply-date {
+            color: #888;
+        }
+
+        .reply-content {
+            margin-top: 5px;
+        }
+
+        .comment-form input,
+        .comment-form textarea {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .comment-form button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .comment-form button:hover {
+            opacity: 0.8;
+        }
+
+        .reply-button {
+            background-color: #eaeaea;
+            color: #888;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .reply-form {
+            margin-top: 10px;
+        }
+
+        .reply-form input,
+        .reply-form textarea {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .reply-form button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .reply-form button:hover {
+            opacity: 0.8;
+        }
+
+        /* Style cho phần tử phân trang chung */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .pagination a,
+        .pagination span {
+            display: inline-block;
+            padding: 8px 12px;
+            margin-right: 5px;
+            background-color: #f1f1f1;
+            color: #333;
+            text-decoration: none;
+            border-radius: 3px;
+        }
+
+        .pagination a:hover {
+            background-color: #906e6e;
+        }
+
+        .pagination .active {
+            background-color: #333;
+            color: #fff;
+        }
+
+        .pagination .disabled {
+            color: #aaa;
+        }
+
+        .pagination .previous,
+        .pagination .next {
+            font-weight: bold;
+        }
+        .pagination .pagination-link {
+            font-weight: bold;
+        }
+        .pagination .pagination-link.active {
+            background-color: #333;
+            color: #fff;
+        }
     </style>
 @endsection
 @section('content')
@@ -71,7 +235,11 @@
         </div>
         <div class="main-content fl-right">
             {{-- {{ route('cart.add', $product->id) }} --}}
-
+            @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
             <div class="section" id="detail-product-wp">
                 <div class="section-detail clearfix">
                     <div class="thumb-wp fl-left">
@@ -79,7 +247,6 @@
                             <img id="zoom" src="{{ url($product->images) }}"
                                 data-zoom-image="{{ url($product->images) }}" />
                         </a>
-
                         <div id="list-thumb">
                             {{-- @foreach ($product as $item)
                                 <a href=""
@@ -89,25 +256,16 @@
                                         src="https://media3.scdn.vn/img2/2017/10_30/BlccRg_simg_02d57e_50x50_maxb.jpg" />
                                 </a>
                             @endforeach --}}
-
                             @php
-                                 $list_images = json_decode($product->list_images,true);
+                                $list_images = json_decode($product->list_images, true);
                             @endphp
-                        @foreach ($list_images as $item)
-                            
-                        <a href=""
-                            data-image="{{ url(htmlspecialchars($item)) }}"
-                            data-zoom-image="{{ url(htmlspecialchars($item)) }}">
-                            <img id="zoom" src="{{ url(htmlspecialchars($item)) }}" />
-                        </a>
-                        @endforeach
-                    
-
-
-
+                            @foreach ($list_images as $item)
+                                <a href="" data-image="{{ url(htmlspecialchars($item)) }}"
+                                    data-zoom-image="{{ url(htmlspecialchars($item)) }}">
+                                    <img id="zoom" src="{{ url(htmlspecialchars($item)) }}" />
+                                </a>
+                            @endforeach
                         </div>
-
-
                     </div>
                     <div class="thumb-respon-wp fl-left">
                         <img src="{{ url($product->images) }}" alt="">
@@ -120,7 +278,6 @@
                                 {!! $product->desc !!}
                             </div>
                         </div>
-
                         <div class="num-product">
                             <span class="title">Sản phẩm: </span>
                             <span class="status">{{ $product->status == 1 ? 'Còn hàng' : 'Hết hàng' }}</span>
@@ -142,16 +299,86 @@
                 </div>
             </div>
             <div class="section" id="post-product-wp">
-
                 <div class="section-head">
                     <h3 class="section-title">Mô tả sản phẩm</h3>
                 </div>
-
                 <div class="section-detail" style="height: 600px;">
                     <p> {!! $product->detail !!}</p>
                 </div>
                 <span id="expandButton">Mở rộng</span>
             </div>
+            {{-- cmt --}}
+            <div class="section">
+                <h2>NHẬN XÉT</h2>
+
+                @forelse ($comments as $comment)
+                    <div class="comment-list">
+                        @if ($comment->parent_id === null)
+                            <div class="comment">
+                                <div class="comment-header">
+                                    <div class="comment-author">{{ $comment->user->name }}</div>
+                                    <div class="comment-date">Ngày đăng: <i>{{ $comment->created_at }}</i></div>
+                                </div>
+                                <div class="comment-content"> {{ $comment->content }}</div>
+
+                                @foreach ($comment->replies as $reply)
+                                    <div class="reply-list">
+                                        <div class="reply">
+                                            <div class="reply-header">
+                                                <div class="reply-author">{{ $reply->user->name }}</div>
+                                                <div class="reply-date">{{ $reply->created_at }}</div>
+                                            </div>
+                                            <div class="reply-content">{{ $reply->content }}</div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                                <button class="reply-button">Trả lời</button>
+                                <div class="reply-form" style="display: none;">
+                                    <form action="{{ route('relycomment', $comment->id) }}" method="post">
+                                        @csrf
+                                        <textarea placeholder="Nội dung trả lời" name="relycomment[{{ $comment->id }}]"></textarea>
+                                        @error('relycomment.' . $comment->id)
+                                            <p class="text-danger"> {{ $message }}</p>
+                                        @enderror
+                                        <button type="submit" class="submit-reply">Gửi trả lời</button>
+                                    </form>
+                                </div>
+                            </div>
+                        @endif
+
+
+                    </div>
+                @empty
+                    <div class="comment-list">
+                        <div class="comment">
+                            <div class="comment-header">
+                                <div class="comment-author">
+                                    Chưa có nhận xét nào về sản phẩm
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                @endforelse
+
+
+                <form class="comment-form" method="POST" action="{{ route('comment', $product) }}">
+                    @csrf
+                    <textarea placeholder="Nội dung bình luận sản phẩm" name="comment"></textarea>
+                    @error('comment')
+                        <p class="text-danger"> {{ $message }}</p>
+                    @enderror
+                    <button type="submit">Gửi bình luận</button>
+                </form>
+                <div class="pagination">
+                    {{ $comments->appends(request()->all())->links() }}
+
+                </div>
+
+            </div>
+
+
+            {{-- end-cmt --}}
             <div class="section" id="same-category-wp">
                 <div class="section-head">
                     <h3 class="section-title">Cùng chuyên mục</h3>
@@ -179,8 +406,8 @@
                                 </div>
                             </li>
                         @endforeach
-                     
-                  
+
+
                     </ul>
                 </div>
             </div>
@@ -256,8 +483,8 @@
                     $('.qtys').text(response.cartCount); // Tổng gio hang layouts
                     // $('#qty_per').text(response.qty_per)  // số lượng của mỗi sản phẩm layouts
                     $('.total-price-lo').text(response.cartTotal);
-                           // show listcart
-                           var list_cart = response.list_cart;
+                    // show listcart
+                    var list_cart = response.list_cart;
                     $('#show-dropcart').empty()
                     $('#show-dropcart').append(list_cart)
                     $('#notification').show()
@@ -286,6 +513,26 @@
                     $(this).prev().css('height', '600px')
                 }
 
+            });
+        });
+    </script>
+
+    <script>
+        // Lấy tất cả các nút "Trả lời"
+        const replyButtons = document.querySelectorAll('.reply-button');
+
+        // Lặp qua từng nút và thêm sự kiện nhấp vào
+        replyButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Lấy phần tử "reply-form" tương ứng với nút được nhấp vào
+                const replyForm = button.nextElementSibling;
+
+                // Kiểm tra trạng thái hiển thị của form
+                if (replyForm.style.display === 'none') {
+                    replyForm.style.display = 'block';
+                } else {
+                    replyForm.style.display = 'none';
+                }
             });
         });
     </script>

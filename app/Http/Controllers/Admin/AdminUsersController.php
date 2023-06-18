@@ -44,14 +44,12 @@ class AdminUsersController extends Controller
                 'roles' => 'nullable|array',
                 'roles.*' => 'exists:roles,id',
                 'access' => 'required',
-
             ],
             [],
             [
                 'name' => 'Họ và tên',
                 'password' => 'Mật khẩu',
             ]
-
         );
         //password validate
         $password = bcrypt($_POST['password']);
