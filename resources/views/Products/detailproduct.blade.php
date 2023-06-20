@@ -125,6 +125,11 @@
             margin-top: 5px;
         }
 
+        .wp-reply-content {
+            display: flex;
+            justify-content: space-between;
+        }
+
         .comment-form input,
         .comment-form textarea {
             width: 100%;
@@ -210,9 +215,11 @@
         .pagination .next {
             font-weight: bold;
         }
+
         .pagination .pagination-link {
             font-weight: bold;
         }
+
         .pagination .pagination-link.active {
             background-color: #333;
             color: #fff;
@@ -312,23 +319,42 @@
                 <h2>NHẬN XÉT</h2>
 
                 @forelse ($comments as $comment)
-                    <div class="comment-list">
+                    <div class="comment-list" id="wp-comment{{ $comment->id }}">
                         @if ($comment->parent_id === null)
                             <div class="comment">
                                 <div class="comment-header">
                                     <div class="comment-author">{{ $comment->user->name }}</div>
                                     <div class="comment-date">Ngày đăng: <i>{{ $comment->created_at }}</i></div>
                                 </div>
-                                <div class="comment-content"> {{ $comment->content }}</div>
-
+                                <div class="wp-reply-content">
+                                    <div class="comment-content "> {{ $comment->content }}</div>
+                                    @can('roles.delete')
+                                        {{-- {{ route('deleteCmt', $comment->id) }} --}}
+                                        <a class="cmt-trash" href="" data-id="{{ $comment->id }}">
+                                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                        </a>
+                                    @endcan
+                                </div>
                                 @foreach ($comment->replies as $reply)
-                                    <div class="reply-list">
+                                    <div class="reply-list" id="reply-cmt{{ $reply->id }}">
                                         <div class="reply">
                                             <div class="reply-header">
                                                 <div class="reply-author">{{ $reply->user->name }}</div>
                                                 <div class="reply-date">{{ $reply->created_at }}</div>
                                             </div>
-                                            <div class="reply-content">{{ $reply->content }}</div>
+                                            <div class="wp-reply-content">
+                                                <div class="reply-content">{{ $reply->content }}
+                                                </div>
+                                                @can('roles.delete')
+                                                    <div>
+                                                        {{-- {{ route('deleteCmt',$reply->id) }} --}}
+                                                        <a class="cmt-trash" href="" data-id="{{ $reply->id }}">
+                                                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                        </a>
+                                                    </div>
+                                                @endcan
+
+                                            </div>
                                         </div>
                                     </div>
                                 @endforeach
@@ -336,7 +362,7 @@
                                 <div class="reply-form" style="display: none;">
                                     <form action="{{ route('relycomment', $comment->id) }}" method="post">
                                         @csrf
-                                        <textarea placeholder="Nội dung trả lời" name="relycomment[{{ $comment->id }}]"></textarea>
+                                        <textarea style="resize: none" placeholder="Nội dung trả lời" name="relycomment[{{ $comment->id }}]"></textarea>
                                         @error('relycomment.' . $comment->id)
                                             <p class="text-danger"> {{ $message }}</p>
                                         @enderror
@@ -346,10 +372,9 @@
                             </div>
                         @endif
 
-
                     </div>
                 @empty
-                    <div class="comment-list">
+                    {{-- <div class="comment-list">
                         <div class="comment">
                             <div class="comment-header">
                                 <div class="comment-author">
@@ -358,13 +383,13 @@
                             </div>
                         </div>
 
-                    </div>
+                    </div> --}}
                 @endforelse
 
 
                 <form class="comment-form" method="POST" action="{{ route('comment', $product) }}">
                     @csrf
-                    <textarea placeholder="Nội dung bình luận sản phẩm" name="comment"></textarea>
+                    <textarea rows="4" placeholder="Nội dung bình luận sản phẩm" name="comment" style="resize: none"></textarea>
                     @error('comment')
                         <p class="text-danger"> {{ $message }}</p>
                     @enderror
@@ -406,8 +431,6 @@
                                 </div>
                             </li>
                         @endforeach
-
-
                     </ul>
                 </div>
             </div>
@@ -526,7 +549,6 @@
             button.addEventListener('click', () => {
                 // Lấy phần tử "reply-form" tương ứng với nút được nhấp vào
                 const replyForm = button.nextElementSibling;
-
                 // Kiểm tra trạng thái hiển thị của form
                 if (replyForm.style.display === 'none') {
                     replyForm.style.display = 'block';
@@ -535,5 +557,39 @@
                 }
             });
         });
+    </script>
+
+    {{-- //delete cmt  --}}
+    <script>
+        $(document).ready(function() {
+            $('.cmt-trash').click(function(e) {
+                e.preventDefault()
+                let cmtId = $(this).attr('data-id');
+                $.ajax({
+                    url: "{{ route('deleteCmt', ':cmtId') }}".replace(':cmtId', cmtId),
+                    // url: "{{ route('deleteCmt', '"cmtId"') }}",
+                    type: 'DELETE',
+                    data: {
+                        // id: cmtId,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        $('#wp-comment' + cmtId).remove();
+                        $('#reply-cmt' + cmtId).remove();
+                        
+
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        // alert(xhr.status);
+                        // alert(thrownError);
+                    }
+                })
+
+
+            })
+
+
+        })
     </script>
 @endsection

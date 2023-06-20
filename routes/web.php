@@ -25,7 +25,7 @@ Route::get('tim-kiem', 'WebcomeController@searchIndex')->name('searchIndex'); //
 
 Route::post('products/{product}', 'CommentController@store')->name('comment')->middleware('auth');
 Route::post('products-reply/{commentId}', 'CommentController@relystore')->name('relycomment')->middleware('auth');
-
+Route::delete('delete-cmt/{id}', 'CommentController@delete')->name('deleteCmt');
 
 
 

@@ -66,6 +66,7 @@
                 <div class="section" id="info-cart-wp">
                     <div class="section-detail table-responsive">
                         <form action="{{ route('cart.updateAjax') }}" class="update-cart">
+
                             <table class="table">
                                 <thead>
                                     <tr>
@@ -166,7 +167,8 @@
     <script>
         $(document).ready(function() {
             // Lắng nghe sự kiện thay đổi số lượng sản phẩm
-            $('.total-quantity').change(function() {
+            $('.total-quantity').change(function(event) {
+             
                 // Lấy giá trị số lượng sản phẩm và rowId của sản phẩm tương ứng
                 var quantity = $(this).val();
                 var rowId = $(this).closest('tr').data(

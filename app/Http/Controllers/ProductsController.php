@@ -201,9 +201,6 @@ class ProductsController extends Controller
         $renderMenu = $this->renderCategory($categories); // get cate menu
         $categoriess = Category_product::where('status', 1)->whereNull('cat_parent')->paginate(2); // duyệt sản phẩm và phân trang
 
-
-
-
         // 
         //    $categoriess = Category_product::with('product')->get();
 

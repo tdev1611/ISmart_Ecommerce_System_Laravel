@@ -19,6 +19,8 @@ class CommentController extends Controller
     {
         $validatedData = $request->validate([
             'comment' => 'required',
+        ], [], [
+            'comment' => 'Bình luận'
         ]);
 
         $comment = Comment::create([
@@ -56,5 +58,17 @@ class CommentController extends Controller
         return redirect()->back()->with('success', 'Comment added successfully.');
     }
 
+    //action comment
+    function delete( $id)
+    {
+
+        $cmt = Comment::find($id);
+        if (!$cmt) {
+            return response()->json(['message' => 'Record not found'], 404);
+        }
+        $cmt->delete();
+        return response()->json(['message' => 'Record deleted successfully'], 200);
+
+    }
 
 }
