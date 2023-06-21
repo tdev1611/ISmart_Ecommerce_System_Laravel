@@ -124,7 +124,7 @@
                                     padding: 10px 20px 0;
                                 }
                             </style>
-                            <ul id="ULsearch-ajax">
+                            {{-- <ul id="ULsearch-ajax">
                                 <li class="search-ajax"><a
                                         href="https://quydung.unitopcv.com/san-pham/iphone-13-promax/Trả"
                                         góp="" 0="" lãi="" xuất=""
@@ -134,7 +134,7 @@
                                         href="https://quydung.unitopcv.com/san-pham/iphone-13-promax/Trả góp 0 lãi xuất Apple Iphone 13Pro 24G"
                                         style="flex-basis: 82%; padding-left:50px; color:cadetblue; font-size:14px;">Trả
                                         góp 0 lãi xuất Apple Iphone 13Pro 24G</a> </li>
-                            </ul>
+                            </ul> --}}
 
 
 

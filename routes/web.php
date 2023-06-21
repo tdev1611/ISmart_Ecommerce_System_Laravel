@@ -18,16 +18,17 @@ use Illuminate\Http\Request;
 
 //client
 
-Route::get('/', 'WebcomeController@indexx')->name('homes');  // trang chủ
+Route::get('/', 'WebcomeController@indexx')->name('homes'); // trang chủ
 Route::get('tim-kiem', 'WebcomeController@searchIndex')->name('searchIndex'); // index
 
 
+//comment-product-detail
+Route::middleware('auth')->group(function () {
 
-Route::post('products/{product}', 'CommentController@store')->name('comment')->middleware('auth');
-Route::post('products-reply/{commentId}', 'CommentController@relystore')->name('relycomment')->middleware('auth');
-Route::delete('delete-cmt/{id}', 'CommentController@delete')->name('deleteCmt');
-
-
+    Route::post('products/{product}', 'CommentController@store')->name('comment');
+    Route::post('products-reply/{commentId}', 'CommentController@relystore')->name('relycomment');
+    Route::delete('delete-cmt/{id}', 'CommentController@delete')->name('deleteCmt')->can('roles.delete');
+});
 
 // product, productDetail, danh mục
 Route::group(['prefix' => 'san-pham'], function () {
