@@ -55,10 +55,8 @@ class AdminUsersController extends Controller
         $password = bcrypt($_POST['password']);
         $input['password'] = $password;   // Thêm passowrd
         $user =  User::create($input);        // add user
-
         $role = $request->input('roles');
         $user->roles()->attach($role);  // add quyền
-
         return redirect()->back()->with('success', 'Thêm thành viên mới thành công');
     }
     // Danh sách thnahf viên

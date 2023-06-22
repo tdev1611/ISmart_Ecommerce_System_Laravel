@@ -348,7 +348,7 @@
                                                 @can('roles.delete')
                                                     <div>
                                                         {{-- {{ route('deleteCmt',$reply->id) }} --}}
-                                                        <a class="cmt-trash" href="" data-id="{{ $reply->id }}">
+                                                        <a class="cmt-trash"  href="" data-id="{{ $reply->id }}">
                                                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                                                         </a>
                                                     </div>
@@ -410,7 +410,6 @@
                 </div>
                 <div class="section-detail">
                     <ul class="list-item">
-
                         @foreach ($relatedProducts as $item)
                             <li style="height: 276px">
                                 <a href="{{ route('productDetail', $item->slug) }}" title="" class="thumb">
@@ -561,11 +560,13 @@
 
     {{-- //delete cmt  --}}
     <script>
-        $(document).ready(function() {
+        $(document).ready(function() {            
             $('.cmt-trash').click(function(e) {
                 e.preventDefault()
                 let cmtId = $(this).attr('data-id');
-                $.ajax({
+                
+                if(confirm("Bạn có chắc chắn muốn xóa bình luận này?")) {
+                    $.ajax({
                     url: "{{ route('deleteCmt', ':cmtId') }}".replace(':cmtId', cmtId),
                     // url: "{{ route('deleteCmt', '"cmtId"') }}",
                     type: 'DELETE',
@@ -577,15 +578,14 @@
                     success: function(response) {
                         $('#wp-comment' + cmtId).remove();
                         $('#reply-cmt' + cmtId).remove();
-                        
-
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
                         // alert(xhr.status);
                         // alert(thrownError);
                     }
                 })
-
+                }
+             
 
             })
 

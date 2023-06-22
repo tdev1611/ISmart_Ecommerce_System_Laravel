@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Models\Page;
 
@@ -28,28 +28,46 @@ class AdminPagesController extends Controller
     //store
     function createPage(Request $request)
     {
-
-        $request->validate(
-            [
-                'title' => 'required',
-                'slug' => 'required',
-                'content' => 'required',
-                'file' => 'required',
-            ],
-        ); 
-        // upload file
         $input = $request->all();
+        // $validator = $request->validate(
+        //     [
+        //         'title' => 'required',
+        //         'slug' => 'required',
+        //         'content' => 'required',
+        //         'file' => 'required',
+        //     ],
+        // );
+        $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'slug' => 'required',
+            'content' => 'required',
+            'file' => 'required|file',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+        // upload file
         if ($request->hasFile('file')) {
             $file = $request->file;
-            $filename = $request->slug . '-'  . '.' . $file->getClientOriginalExtension();
+            $filename = $request->slug . '-' . '.' . $file->getClientOriginalExtension();
             $path = $file->move('public/uploads/pages', $filename);
             $img = "public/uploads/pages/" . $filename;
             $input['images'] = $img;
         }
 
-        //up 
-        Page::create($input);
-        return redirect(route('admin.addPage'))->with('success', 'Thêm bài viết thành công');
+        //up  
+        if ($validator->validated()) {
+            Page::create($input);
+            return response()->json([
+                'success' => 'Bản ghi đã được thêm thành công',
+            ]);
+        }
+
+
+
+
+        // return redirect(route('admin.addPage'))->with('success', 'Thêm bài viết thành công');
     }
 
     // Danh sách
@@ -91,24 +109,23 @@ class AdminPagesController extends Controller
     {
 
         $page = Page::find($id);
-        return  view('admin.Page.edit-page', compact('page'));
+        return view('admin.Page.edit-page', compact('page'));
     }
 
-    function update(Request  $request, $id)
+    function update(Request $request, $id)
     {
-        $request->validate(
-            [
-                'title' => 'required',
-                'slug' => 'required',
-                'content' => 'required',
-            ],
-        );
+        
+        $validator = Validator::make($request->input(), [
+            'title' => 'required',
+            'slug' => 'required',
+            'content' => 'required',
+        ]);
         // upload file
         $update = $request->only('title', 'content', 'slug', 'status');
         //uplaod file 
         if ($request->hasFile('file')) {
             $file = $request->file;
-            $filename = $request->slug . '-'  . '.' . $file->getClientOriginalExtension();
+            $filename = $request->slug . '-' . '.' . $file->getClientOriginalExtension();
             $path = $file->move('public/uploads/pages', $filename);
             $img = "public/uploads/pages/" . $filename;
             $update['images'] = $img;
@@ -141,7 +158,7 @@ class AdminPagesController extends Controller
                     return redirect(route('admin.listPage'))->with('success', 'Đã khôi phục thành công');
                 }
                 if ($action == 'forceDelelte') {
-                    $page =  Page::withTrashed()->whereIn('id', $list_checks)->forceDelete();
+                    $page = Page::withTrashed()->whereIn('id', $list_checks)->forceDelete();
                     return redirect(route('admin.listPage'))->with('success', 'Xóa vĩnh viễn thành công');
                 } else {
                     return redirect(route('admin.listPage'))->with('warning', 'Bạn cần chọn hành động');

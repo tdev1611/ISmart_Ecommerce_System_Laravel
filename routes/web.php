@@ -24,7 +24,6 @@ Route::get('tim-kiem', 'WebcomeController@searchIndex')->name('searchIndex'); //
 
 //comment-product-detail
 Route::middleware('auth')->group(function () {
-
     Route::post('products/{product}', 'CommentController@store')->name('comment');
     Route::post('products-reply/{commentId}', 'CommentController@relystore')->name('relycomment');
     Route::delete('delete-cmt/{id}', 'CommentController@delete')->name('deleteCmt')->can('roles.delete');

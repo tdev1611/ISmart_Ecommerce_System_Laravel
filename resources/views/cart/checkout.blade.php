@@ -207,7 +207,6 @@
                     url: "{{ route('payment') }}",
                     type: 'POST',
                     success: function(response) {
-                       
                         // Trả về view 'thank-order' 
                         $('#loading-overlay').hide();
                         window.location.href = '/dat-hang-thanh-cong';

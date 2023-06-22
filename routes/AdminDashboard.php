@@ -19,8 +19,8 @@ Route::group(['namespace' => 'Admin'], function () {
 
 //page
 Route::group(['prefix' => 'page', 'namespace' => 'Admin'], function () {
-    Route::post('store', 'AdminPagesController@createPage')->name('admin.createPage')->can('pages.add');
     Route::get('add', 'AdminPagesController@addPage')->name('admin.addPage')->can('pages.add');
+    Route::post('store', 'AdminPagesController@createPage')->name('admin.createPage')->can('pages.add');
     Route::get('list', 'AdminPagesController@listPage')->name('admin.listPage')->can('pages.view');
     Route::get('edit/{id}', 'AdminPagesController@edit')->name('admin.editPage')->can('pages.edit');
     Route::post('update/{id}', 'AdminPagesController@update')->name('admin.updatePage')->can('pages.edit');

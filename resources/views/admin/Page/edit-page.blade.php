@@ -1,8 +1,8 @@
 @extends('admin/layouts.dashboard')
-@section('title','Chỉnh sửa trang')
+@section('title', 'Chỉnh sửa trang')
 @section('Laravel-File-Manager')
-    <script src="https://cdn.tiny.cloud/1/ycev3jqs96174pjltcois4npv3ucaz0uolrs5l7ra90v05qe/tinymce/5/tinymce.min.js"
-        referrerpolicy="origin"></script>
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
     {{-- <script>
         tinymce.init({
             selector: '#title', // selector để add tiny vào 
@@ -14,43 +14,16 @@
         });
     </script> --}}
     <script>
-        var editor_config = {
-            // path_absolute: là đường dẫn của dự án (project) để có thể upload file 
-            path_absolute: "http://localhost/back-end/Laravel-Pro/lesson/Section-20-tiny-editor-form/project-name/",
-            selector: 'textarea',
-            height: 420,
-            relative_urls: false,
+        tinymce.init({
+            selector: 'textarea', // selector để add tiny vào 
+            height: 498,
             plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss preview',
             toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | forecolor backcolor| preview  | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | bold italic backcolor | removeformat ',
             tinycomments_mode: 'embedded',
             tinycomments_author: 'Author name',
-            file_picker_callback: function(callback, value, meta) {
-                var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName(
-                    'body')[0].clientWidth;
-                var y = window.innerHeight || document.documentElement.clientHeight || document
-                    .getElementsByTagName('body')[0].clientHeight;
+            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
 
-                var cmsURL = editor_config.path_absolute + 'laravel-filemanager?editor=' + meta.fieldname;
-                if (meta.filetype == 'image') {
-                    cmsURL = cmsURL + "&type=Images";
-                } else {
-                    cmsURL = cmsURL + "&type=Files";
-                }
-
-                tinyMCE.activeEditor.windowManager.openUrl({
-                    url: cmsURL,
-                    title: 'Quản lý ảnh',
-                    width: x * 0.8,
-                    height: y * 0.8,
-                    resizable: "yes",
-                    close_previous: "no",
-                    onMessage: (api, message) => {
-                        callback(message.content);
-                    }
-                });
-            }
-        };
-        tinymce.init(editor_config);
+        });
     </script>
 @endsection
 
@@ -59,7 +32,7 @@
     <div id="content" class="container-fluid">
         <div class="card">
             <div class="card-header font-weight-bold">
-               Chỉnh sửa bài viết
+                Chỉnh sửa bài viết
             </div>
             @if (session('success'))
                 <div class="alert alert-success">
@@ -79,7 +52,8 @@
                     </div>
                     <div class="form-group">
                         <label for="slug" class="font-weight-bold">slug</label>
-                        <input class="form-control" type="text" name="slug" id="slug" value="{{ $page->slug }}" placeholder="Slug">
+                        <input class="form-control" type="text" name="slug" id="slug" value="{{ $page->slug }}"
+                            placeholder="Slug">
                         @error('slug')
                             <div class="text-danger"> {{ $message }}</div>
                         @enderror
@@ -94,7 +68,8 @@
                     </div>
 
                     <div class="mb-3">
-                        <input class="form-control w-25 " value="{{ $page ->images }}" name="file" type="file" id="formFile">
+                        <input class="form-control w-25 " value="{{ $page->images }}" name="file" type="file"
+                            id="formFile">
                         @error('file')
                             <div class="text-danger mt-2"> {{ $message }}</div>
                         @enderror
@@ -102,28 +77,29 @@
                     <div class="form-group">
                         <label for="">Trạng thái</label>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="status" id="exampleRadios2"
-                                value="1" checked>
+                            <input class="form-check-input" type="radio" name="status" id="exampleRadios2" value="1"
+                                checked>
                             <label class="form-check-label" for="exampleRadios2">
                                 Công khai
                             </label>
                         </div>
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="status" id="exampleRadios1"
-                                value="2" >
+                                value="2">
                             <label class="form-check-label" for="exampleRadios1">
                                 Chờ duyệt
                             </label>
                         </div>
-                     
+
                     </div>
-                    <button type="submit" class="btn btn-primary">Thêm mới</button>
+                    <button type="submit" class="btn btn-primary">Chỉnh sửa</button>
                 </form>
             </div>
         </div>
     </div>
 @endsection
 @section('create_slug')
+
     <script>
         $('input#title').keyup(function(event) {
             var title, slug;
@@ -131,7 +107,6 @@
             title = $(this).val();
             //Đổi chữ hoa thành chữ thường
             slug = title.toLowerCase();
-
             //Đổi ký tự có dấu thành không dấus
             slug = slug.replace(/á|à|ả|ạ|ã|ă|ắ|ằ|ẳ|ẵ|ặ|â|ấ|ầ|ẩ|ẫ|ậ/gi, 'a');
             slug = slug.replace(/é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ/gi, 'e');

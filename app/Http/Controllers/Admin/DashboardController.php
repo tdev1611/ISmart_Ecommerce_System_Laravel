@@ -21,7 +21,7 @@ class DashboardController extends Controller
 
     function  dashboard()
     {
-        $orders = Order::orderBy('created_at', 'DESC')->paginate(50);
+        $orders = Order::orderBy('created_at', 'DESC')->paginate(30);
         //  SELECT * FROM `orders` GROUP BY `status` = 2
         $counts = Order::select('status', Order::raw('COUNT(*) as total'))
             ->whereIn('status', [1, 2, 3, 4])

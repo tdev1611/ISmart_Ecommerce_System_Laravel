@@ -98,7 +98,6 @@
                                                         </span>
                                                     @elseif (($role->name == 'Khách hàng') | ($role->name == 'KHÁCH HÀNG') | ($role->name == 'khách hàng'))
                                                         <span class="badge badge-primary">
-
                                                             {{ $role->name }}
                                                         </span>
                                                     @else
