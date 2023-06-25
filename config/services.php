@@ -29,5 +29,14 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
+    'facebook' => [
+        'client_id' => '3186354554844105',
+        'client_secret' => '73f6ffb71f5d66792b511b0b26077646',
+        'redirect' => 'http://localhost/back-end/Laravel-Pro/project/ismart/auth/facebook/callback',
+        'state' => true, 
+
+    ],
+
+
 
 ];

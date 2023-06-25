@@ -13,14 +13,17 @@
             <div class="w-100">
                 <h3 class="mb-4">{{ __('Login') }}</h3>
             </div>
-
         </div>
+        <div>
+            <a class="login-fb" href="{{ route('auth.facebook.redirect') }}">Đăng nhập bằng Facebook</a>
+        </div>
+
         <form method="POST" action="{{ route('login') }}">
             @csrf
             <div class="form-group mb-3">
                 <label class="label" for="name">{{ __('Email') }}</label>
-                <input id="email" type="text" class="form-control @error('email') is-invalid @enderror" name="email"
-                    value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="Email">
+                <input id="email" type="text" class="form-control @error('email') is-invalid @enderror"
+                    name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="Email">
                 @error('email')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -54,7 +57,6 @@
                     </label>
                 </div>
                 <div class="w-50 text-md-right">
-
                     @if (Route::has('password.request'))
                         <a href="{{ route('password.request') }}">
                             {{ __('Forgot Your Password?') }}
@@ -66,7 +68,7 @@
         <p class="text-center"> {{ __('Bạn đăng ký chưa ? ') }}<a href="{{ route('register') }}">{{ __('Register') }}</a>
         </p>
     </div>
-      {{-- <i class="fa-regular fa-eye-slash"></i> --}}
+    {{-- <i class="fa-regular fa-eye-slash"></i> --}}
     <script>
         $('#eye').click(function() {
             $(this).toggleClass('open');

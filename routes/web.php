@@ -4,6 +4,7 @@ use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Laravel\Socialite\Facades\Socialite;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +16,14 @@ use Illuminate\Http\Request;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+
+// login-social
+
+Route::get('auth/facebook/redirect', 'ActionsController@redirectToFacebook')->name('auth.facebook.redirect');
+Route::get('auth/facebook/callback', 'ActionsController@handleFacebookCallback')->name('auth.facebook.callback');
+
+
 
 //client
 
@@ -96,7 +105,7 @@ Route::group(['middleware' => ['auth', 'verified',], 'prefix' => 'admin', 'names
     Route::get('/dashboard', 'DashboardController@dashboard')->can('orders.view');
     Route::get('/', 'DashboardController@dashboard')->can('orders.view');
 });
-Route::get('/logout', 'LogoutController@perform')->name('logout.perform')->middleware('auth');
+Route::get('/logout', 'ActionsController@perform')->name('logout.perform')->middleware('auth');
 
 
 
