@@ -19,7 +19,7 @@
 <body>
     @yield('style_css')
     <div id="warpper" class="nav-fixed ">
-
+        
         <nav class="topnav shadow navbar-light bg-white d-flex">
             <div class="navbar-brand"><a href="{{ url('admin/dashboard') }}">TDEV STORE</a></div>
             <div class="nav-right ">
@@ -40,8 +40,8 @@
                         {{ Auth::user()->name }}
                     </button>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="#">Tài khoản</a>
-                        <a class="dropdown-item" href="{{ route('logout.perform') }}">Thoát</a>
+                        {{-- <a class="dropdown-item" href="#">Tài khoản</a> --}}
+                        <a class="dropdown-item" href="{{ route('logout.perform') }}">Log out</a>
                     </div>
                 </div>
             </div>
@@ -71,13 +71,13 @@
                             <div class="nav-link-icon d-inline-flex">
                                 <i class="far fa-folder"></i>
                             </div>
-                            Trang
+                            Page
                         </a>
                         <i class="arrow fas fa-angle-right"></i>
 
                         <ul class="sub-menu">
-                            <li><a href="{{ url('admin/page/add') }}">Thêm mới</a></li>
-                            <li><a href="{{ url('admin/page/list') }}">Danh sách</a></li>
+                            <li><a href="{{ url('admin/page/add') }}">Add new</a></li>
+                            <li><a href="{{ url('admin/page/list') }}">List</a></li>
                         </ul>
                     </li>
                     <li class="nav-link {{ $modules_active == 'posts' ? 'active' : '' }}">
@@ -85,13 +85,13 @@
                             <div class="nav-link-icon d-inline-flex">
                                 <i class="far fa-folder"></i>
                             </div>
-                            Bài viết
+                            Posts
                         </a>
                         <i class="arrow fas fa-angle-right"></i>
                         <ul class="sub-menu">
-                            <li><a href="{{ url('admin/post/add') }}">Thêm mới</a></li>
-                            <li><a href="{{ url('admin/post/list') }}">Danh sách</a></li>
-                            <li><a href="{{ url('admin/post/category') }}">Danh mục</a></li>
+                            <li><a href="{{ url('admin/post/add') }}">Add new</a></li>
+                            <li><a href="{{ url('admin/post/list') }}">List</a></li>
+                            <li><a href="{{ url('admin/post/category') }}">Category</a></li>
                         </ul>
                     </li>
                     <li class="nav-link {{ $modules_active == 'products' ? 'active' : '' }}">
@@ -99,13 +99,13 @@
                             <div class="nav-link-icon d-inline-flex">
                                 <i class="far fa-folder"></i>
                             </div>
-                            Sản phẩm
+                            Products
                         </a>
                         <i class="arrow fas fa-angle-down"></i>
                         <ul class="sub-menu">
-                            <li><a href="{{ url('admin/product/add') }}">Thêm mới</a></li>
-                            <li><a href="{{ url('admin/product/list') }}">Danh sách</a></li>
-                            <li><a href="{{ url('admin/product/category') }}">Danh mục</a></li>
+                            <li><a href="{{ url('admin/product/add') }}">Add new</a></li>
+                            <li><a href="{{ url('admin/product/list') }}">List</a></li>
+                            <li><a href="{{ url('admin/product/category') }}">Category</a></li>
                         </ul>
                     </li>
                     <li class="nav-link {{ $modules_active == 'orders' ? 'active' : '' }}">
@@ -113,11 +113,11 @@
                             <div class="nav-link-icon d-inline-flex">
                                 <i class="far fa-folder"></i>
                             </div>
-                            Bán hàng
+                           Sale
                         </a>
                         <i class="arrow fas fa-angle-right"></i>
                         <ul class="sub-menu">
-                            <li><a href="{{ url('admin/order/list') }}">Đơn hàng</a></li>
+                            <li><a href="{{ url('admin/order/list') }}">Orders</a></li>
                         </ul>
                     </li>
                     <li class="nav-link {{ $modules_active == 'users' ? 'active' : '' }}">
@@ -130,8 +130,8 @@
                         <i class="arrow fas fa-angle-right"></i>
 
                         <ul class="sub-menu">
-                            <li><a href="{{ route('admin.adduser') }}">Thêm mới</a></li>
-                            <li><a href="{{ route('admin.listusers') }}">Danh sách</a></li>
+                            <li><a href="{{ route('admin.adduser') }}">Add new</a></li>
+                            <li><a href="{{ route('admin.listusers') }}">List</a></li>
                         </ul>
                     </li>
                     <li class="nav-link {{ $modules_active == 'roles' ? 'active' : '' }}">
@@ -139,13 +139,13 @@
                             <div class="nav-link-icon d-inline-flex">
                                 <i class="far fa-folder"></i>
                             </div>
-                            Phân quyền
+                            Authorization Users
                         </a>
                         <i class="arrow fas fa-angle-right"></i>
                         <ul class="sub-menu">
-                            <li><a href="{{ url('admin/permission/add') }}">Quyền</a></li>
-                            <li><a href="{{ url('admin/role/add') }}">Thêm vai trò</a></li>
-                            <li><a href="{{ url('admin/role/list') }}">Danh sách vai trò</a></li>
+                            <li><a href="{{ url('admin/permission/add') }}">Permission</a></li>
+                            <li><a href="{{ url('admin/role/add') }}">Add Role</a></li>
+                            <li><a href="{{ url('admin/role/list') }}">List Role</a></li>
                         </ul>
                     </li>
 
