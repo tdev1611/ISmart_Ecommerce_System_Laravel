@@ -57,7 +57,7 @@
                                             style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#444;font-weight:normal">
                                             <br> <strong>Phương thức thanh
                                                 toán:</strong>
-                                            {{ $data['payment-method'] == 1 ? 'Thanh toán tại nhà' : 'Thanh toán online' }}<br>
+                                            {{ $data['payment_method'] == 1 ? 'Thanh toán tại nhà' : 'Thanh toán online' }}<br>
                                         </p>
                                     </td>
                                 </tr>

@@ -1,0 +1,48 @@
+/* pay-online */
+.pay-option {
+    font-weight: 500;
+    font-size: 21px;
+}
+
+
+.container_PaymentContent_qr-code {
+    display: flex;
+}
+.container_PaymentContent_qr-code .PaymentContent_instruction {
+    margin-left: 30px;
+    font-weight: 900;
+}
+.order-code {
+    color: orange;
+}
+.PaymentContent_qr-code img {
+    height: 113px;
+}
+
+
+/* pay-tran */
+.PaymentContent_bank-info-item {
+    background-color: #65707a;
+    border-radius: 8px;
+    flex: 1 1;
+    padding: 8px 16px;
+    position: relative;
+    margin-bottom: 10px;
+}
+.PaymentContent_label {
+    color: #a2adbd;
+ 
+    font-weight: 400;
+    line-height: 16px;
+    margin-bottom: 8px;
+    font-size: 1rem;
+}
+.PaymentContent_content{
+    align-items: center;
+    color: #dae4f0;
+    display: flex;
+    font-size: 1rem;
+    font-weight: 600;
+    justify-content: space-between;
+    line-height: 24px;
+}

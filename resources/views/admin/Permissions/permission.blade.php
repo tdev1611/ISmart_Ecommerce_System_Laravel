@@ -2,7 +2,6 @@
 @section('title', 'Add permission')
 @section('content')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <div id="content" class="container-fluid">
         <div class="row">
             <div class="col-4">
@@ -16,7 +15,6 @@
                             {{ session('success') }}
                         </div>
                     @endif
-
                     <div class="card-body">
                         <form method="post" action="{{ route('permission_create') }}">
                             @csrf

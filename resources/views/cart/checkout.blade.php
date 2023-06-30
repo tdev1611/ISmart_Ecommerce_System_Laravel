@@ -1,7 +1,9 @@
 @extends('layout-client.layouts')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
-        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+
 @section('content')
+
     <style>
         #order-success #order-end {
             text-align: center;
@@ -31,7 +33,6 @@
         /* loading */
 
         #loading-overlay {
-
             position: fixed;
             top: 0;
             left: 0;
@@ -53,7 +54,7 @@
             color: white;
         }
     </style>
-    
+
     <div id="main-content-wp" class="checkout-page">
         <div class="section" id="breadcrumb-wp">
             <div class="wp-inner">
@@ -162,13 +163,16 @@
                             <div id="payment-checkout-wp">
                                 <ul id="payment_methods">
                                     <li>
-                                        <input type="radio" id="payment-home" name="payment-method" value="1"
+                                        <input type="radio" id="payment-home" name="payment_method" value="1"
                                             checked>
-                                        <label for="payment-home">Thanh toán tại nhà</label>
+                                        <label for="payment-home" class="btn ">Thanh toán tại nhà</label>
+
                                     </li>
                                     <li>
-                                        <input type="radio" id="direct-payment" name="payment-method" value="2">
-                                        <label for="direct-payment">Thanh toán tại cửa hàng</label>
+                                        <input type="radio" id="direct-payment"   name="payment_method" value="2">
+                                        <label for="direct-payment" data-toggle="modal" data-target="#exampleModal"
+                                            class="btn ">Thanh toán online</label>
+
                                     </li>
 
                                 </ul>
@@ -187,22 +191,158 @@
             </div>
         @endif
     </div>
+    <!-- Modal -->
 
+    {{-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Chuyển khoản online
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="PaymentContent_container-modal d-flex container-fluid">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="PaymentContent_left-modal">
+                                    <div class="course-name"><span class="PaymentContent_modal-subtitle__JcvUU">Tên
+                                            khóa học:</span>
+                                        <h2 class="PaymentContent_sub-title__9eyIH Title_wrapper__QLUyI">
+                                            <p>HTML CSS Pro</p>
+                                        </h2>
+                                    </div>
+                                    <div class="PaymentContent_order-code"><span class="PaymentContent_modal-subtitle">Mã
+                                            đơn
+                                            hàng:</span>
+                                        <h2 lass="PaymentContent_sub-title">
+                                            <p>F8C1A7QU</p>
+                                        </h2>
+                                    </div>
+                                    <hr class="PaymentContent_divider__8tgr5">
+
+                                    <hr class="PaymentContent_divider__8tgr5">
+                                    <div class="PaymentContent_modal-price"><span
+                                            class="PaymentContent_modal-subtitle">Chi
+                                            tiết thanh toán:</span>
+                                        <div class="PaymentContent_price-wrapper">
+                                            <div class="PaymentContent_price-box"><span
+                                                    class="PaymentContent_price-desc">Giá
+                                                    bán:</span>
+                                                <span
+                                                    class="PaymentContent_price-detail"><del>2,499,000đ</del><span>1,299,000đ</span></span>
+                                            </div>
+                                            <div class="PaymentContent_divider"></div>
+                                            <div class="PaymentContent_price-box PaymentContent_total-price">
+                                                <span class="PaymentContent_price-desc">Tổng
+                                                    tiền:</span>
+                                                <span class="PaymentContent_price-final">1,299,000đ</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="PaymentContent_right-modal">
+                                    <div class="right-modal-middle">
+                                        <h2 class="PaymentContent_title">
+                                            <p class="pay-option">Chuyển khoản bằng QR
+                                            </p>
+                                        </h2>
+                                        <div class="container_PaymentContent_qr-code">
+                                            <div class="PaymentContent_qr-code">
+                                                <img
+                                                    src="https://img.vietqr.io/image/Vietcombank-9353538222-znVvEh.jpg?accountName=Cong%20Ty%20Co%20Phan%20Cong%20Nghe%20Giao%20duc%20F8&amp;amount=1299000&amp;addInfo=F8C1A7QU">
+                                            </div>
+                                            <ul class="PaymentContent_instruction">
+                                                <li>Bước 1: Mở app ngân hàng hoặc Momo
+                                                    và quét
+                                                    mã QR.</li>
+                                                <li>Bước 2: Đảm bảo nội dung chuyển
+                                                    khoản là
+                                                    <span class="order-code">F8C1A7QU</span>.
+                                                </li>
+                                                <li>Bước 3: Thực hiện thanh toán.</li>
+                                            </ul>
+                                        </div>
+                                        <h2 class="PaymentContent_title Title_wrapper">
+                                            <p class="pay-option">Chuyển khoản thủ công
+                                            </p>
+                                        </h2>
+                                        <div class="PaymentContent_bank-info">
+                                            <div class="PaymentContent_bank-info-item">
+                                                <div class="PaymentContent_label">
+                                                    Số
+                                                    tài khoản</div>
+                                                <div class="PaymentContent_content">
+                                                    03891815401
+                                                </div>
+                                            </div>
+                                            <div class="PaymentContent_bank-info-item">
+                                                <div class="PaymentContent_label">
+                                                    Tên tài khoản</div>
+                                                <div class="PaymentContent_content">
+                                                    Trịnh Đức Hải</div>
+                                            </div>
+                                            <div class="PaymentContent_bank-info-item">
+                                                <div class="PaymentContent_label">
+                                                    Nội dung</div>
+                                                <div class="PaymentContent_content">
+                                                    <span class="order-code">F8C1A7QU</span>
+                                                </div>
+
+                                            </div>
+                                            <div class="PaymentContent_bank-info-item">
+                                                <div class="PaymentContent_label">
+                                                    Chi nhánh</div>
+                                                <div class="PaymentContent_content">
+                                                    Hà Nội</div>
+                                            </div>
+                                        </div>
+                                        <h2 class="PaymentContent_title Title_wrapper">
+                                            <p class="pay-option"> Lưu ý
+                                            </p>
+                                            <p>Sau khi chuyển khoản thành công bạn nhấn vào <b>Xác nhận</b>
+                                                và ra bên ngoài nhấn <b>Đặt hàng</b>
+                                                và thông tin sẽ được gửi đến mail của bạn
+                                            </p>
+                                        </h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Xác nhận</button>
+
+                </div>
+            </div>
+        </div>
+    </div> --}}
+
+
+ 
+
+    {{-- end-modaul  --}}
     <div id="loading-overlay">
         <div class="loading-text">Đang gửi thông tin đơn hàng đến email của bạn!
             <div class="spinner-border text-warning">
                 <span class="sr-only">Loading</span>
             </div>
         </div>
-      
-    </div>
 
+    </div>
     <script>
         $(document).ready(function() {
             $('#order-now').click(function() {
                 //hiệu ứng chờ
                 $('#loading-overlay').show();
-              
+
                 $.ajax({
                     url: "{{ route('payment') }}",
                     type: 'POST',
@@ -212,7 +352,7 @@
                         window.location.href = '/dat-hang-thanh-cong';
                     },
                     error: function(xhr) {
-                      
+
                     }
                 });
             });

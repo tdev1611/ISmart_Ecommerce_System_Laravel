@@ -15,7 +15,7 @@
             </div>
         </div>
         <div>
-            <a class="login-fb" href="{{ route('auth.facebook.redirect') }}">Đăng nhập bằng Facebook</a>
+            {{-- <a class="login-fb" href="{{ route('auth/facebook/redirect') }}">Đăng nhập bằng Facebook</a> --}}
         </div>
 
         <form method="POST" action="{{ route('login') }}">

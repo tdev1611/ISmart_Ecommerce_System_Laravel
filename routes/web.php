@@ -20,10 +20,8 @@ use Laravel\Socialite\Facades\Socialite;
 
 // login-social
 
-Route::get('auth/facebook/redirect', 'ActionsController@redirectToFacebook')->name('auth.facebook.redirect');
+Route::get('auth/facebook/redirect', 'ActionsController@redirectToFacebook')->name('facebook.redirect');
 Route::get('auth/facebook/callback', 'ActionsController@handleFacebookCallback')->name('auth.facebook.callback');
-
-
 
 //client
 
@@ -68,6 +66,7 @@ Route::post('/add-to-cartDet', 'CartController@addCartDetailAjax')->name('cart.a
 Route::get('thanh-toan', 'OrderController@checkOut')->name('showCheckCount'); // view
 Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::post('payment', 'OrderController@payment')->name('payment'); // view
+    Route::get('thanh-toan-online', 'OrderController@paymentOnline')->name('paymentOnline');
     Route::get('dat-hang-thanh-cong', 'OrderController@orderSuccess')->name('thanksOrder');
 });
 

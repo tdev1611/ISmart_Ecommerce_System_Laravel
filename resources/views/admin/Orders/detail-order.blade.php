@@ -47,7 +47,7 @@
                     </div>
                     <div>
                         <P class="font-weight-bold">Hình thức thanh toán</P>
-                        <p>{{ $order['payment-method'] == 1 ? 'Thanh toán tại nhà' : 'Thanh toán online' }}</p>
+                        <p>{{ $order->payment_method == 1 ? 'Thanh toán tại nhà' : 'Thanh toán online' }}</p>
                     </div>
                     <div>
                         {{-- 1: chờ xử lý, 2: Đang xử lý , 3: Thành công --}}

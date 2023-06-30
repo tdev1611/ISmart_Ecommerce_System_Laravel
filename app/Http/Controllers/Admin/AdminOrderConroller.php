@@ -74,8 +74,8 @@ class AdminOrderConroller extends Controller
     // detail 
     function detail($id)
     {
-        $order = Order::find($id);
-
+         $order = Order::find($id);
+          
         return view('admin.Orders.detail-order', compact('order'));
     }
 

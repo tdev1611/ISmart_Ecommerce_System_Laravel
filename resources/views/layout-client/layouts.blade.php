@@ -21,6 +21,7 @@
     <script src="{{ asset('/client/public/js/bootstrap/bootstrap.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/client/public/js/carousel/owl.carousel.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/client/public/js/main.js') }}"></script>
+    
 </head>
 
 <body>
