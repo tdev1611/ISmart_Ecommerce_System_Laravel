@@ -219,10 +219,10 @@ class ProductsController extends Controller
         $renderMenu = $this->renderCategory($categories); // get cate menu
         $categoriess = Category_product::where('status', 1)->whereNull('cat_parent')->paginate(2); // duyệt sản phẩm và phân trang
 
-        // 
+        $product_views = Product_view::orderBy('view_count','desc')->get();
         //    $categoriess = Category_product::with('product')->get();
 
-        return view('Products.showProduct', compact('renderMenu', 'categoriess', ));
+        return view('Products.showProduct', compact('renderMenu', 'categoriess','product_views' ));
     }
 
     // sortProduct product-show

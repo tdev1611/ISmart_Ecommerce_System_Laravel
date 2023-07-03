@@ -147,6 +147,36 @@
                     </ul>
                 </div>
             </div>
+            <div class="section" id="selling-wp">
+                <div class="section-head">
+                    <h3 class="section-title">Sản phẩm truy cập nhiều nhất </h3>
+                </div>
+                <div class="section-detail">
+                    <ul class="list-item">
+                        @foreach ($product_views as $item)
+                            <li class="clearfix">
+                                <a href="{{ route('productDetail', $item->product->slug) }}" title="{{ $item->product->name }}"
+                                    class="thumb fl-left">
+                                    <img src="{{ url($item->product->images) }}" alt="">
+                                </a>
+                                <div class="info fl-right">
+                                    <a href="{{ route('productDetail', $item->product->slug) }}" title=""
+                                        class="product-name">{{ $item->product->name }}</a>
+                                    <div class="price">
+                                        <span class="new">{{ number_format($item->product->price, 0, '', '.') }} đ</span>
+                                        {{-- @if ($item->sale_price !== 0.0)
+                                            <span class="old">{{ number_format($item->sale_price, 0, '', '.') }}
+                                                đ</span>
+                                        @endif --}}
+                                    </div>
+                                    <a href="{{ route('buyNow', $item['product_id']) }}" title="mua"
+                                        class="buy-now">Mua ngay</a>
+                                </div>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
             {{-- <div class="section" id="filter-product-wp">
                 <div class="section-head">
                     <h3 class="section-title">Bộ lọc</h3>
