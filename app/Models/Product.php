@@ -12,11 +12,8 @@ class Product extends Model
      'sale_price', 'desc','category_product_id','code','featured_products','list_images'];
 
     function category_product() {
-
         return $this->belongsTo('App\Models\Category_product',);
-    
     }
-
 
     public function comments()
     {
@@ -24,4 +21,8 @@ class Product extends Model
     }
 
    
+        function views(){
+            return $this->hasMany('App\Models\Product_view');
+        }
+
 }

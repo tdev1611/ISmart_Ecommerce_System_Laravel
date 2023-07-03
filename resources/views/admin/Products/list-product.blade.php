@@ -73,6 +73,7 @@
                                 <th scope="col">Sản phẩm nổi bật</th>
                                 <th scope="col">Giá</th>
                                 <th scope="col">Danh mục</th>
+                                <th scope="col">Lượt xem</th>
                                 <th scope="col">Ngày tạo</th>
                                 <th scope="col">Trạng thái</th>
                                 <th scope="col">Tác vụ</th>
@@ -95,6 +96,9 @@
                                         <td>{{ $product->featured_products == 1 ? 'Có' : 'Không' }}</td>
                                         <td>{{ number_format($product->price, 0, '', '.') }}đ</td>
                                         <td>{{ $product->category_product->name }} </td>
+                                        <td>
+                                                {{ $product->views->sum('view_count') }}   
+                                        </td>
                                         <td>{{ $product->created_at }}</td>
                                         {{-- <td><span class="badge badge-success">Còn hàng</span></td> --}}
                                         <td>{{ $product->status == 1 ? 'Hiển thị' : 'Ẩn' }}</td>

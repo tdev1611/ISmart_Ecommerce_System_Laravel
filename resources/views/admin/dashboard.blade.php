@@ -13,8 +13,14 @@
         .card-header a:hover {
             color: #025464;
         }
+
         td span a {
             color: #fff;
+        }
+        /* product_views */
+        #product_views {
+            background:#fff;
+            margin-bottom:30px;
         }
     </style>
     <div class="container-fluid py-5">
@@ -120,13 +126,17 @@
                                 <td>
                                     @if ($order->status == 1)
                                         {{-- 1: chờ xử lý, 2: Đang xử lý , 3: Thành công, 4 hủy --}}
-                                        <span class="badge badge-danger"><a href="{{ route('admin.detailOrder', $order->id) }}">Chờ xử lý</a></span>
+                                        <span class="badge badge-danger"><a
+                                                href="{{ route('admin.detailOrder', $order->id) }}">Chờ xử lý</a></span>
                                     @elseif ($order->status == 2)
-                                        <span class="badge badge-warning"><a href="{{ route('admin.detailOrder', $order->id) }}">Đang xử lý</a></span>
+                                        <span class="badge badge-warning"><a
+                                                href="{{ route('admin.detailOrder', $order->id) }}">Đang xử lý</a></span>
                                     @elseif ($order->status == 3)
-                                        <span class="badge badge-success"><a href="{{ route('admin.detailOrder', $order->id) }}">Thành công</a></span>
+                                        <span class="badge badge-success"><a
+                                                href="{{ route('admin.detailOrder', $order->id) }}">Thành công</a></span>
                                     @else
-                                        <span class="badge badge-secondary"><a href="{{ route('admin.detailOrder', $order->id) }}">Hủy đơn hàng</a></span>
+                                        <span class="badge badge-secondary"><a
+                                                href="{{ route('admin.detailOrder', $order->id) }}">Hủy đơn hàng</a></span>
                                     @endif
 
                                 </td>
@@ -145,5 +155,43 @@
             </div>
         </div>
 
+        {{-- talbe --}}
+
     </div>
+
+    {{-- <div id="product_views"> --}}
+        <div class="container-fluid" id="product_views">
+            <div class="row">
+                <div class="col-12">
+                    <h5>Sản phẩm được xem nhiều nhất</h5>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr class="table-info">
+                                <th scope="col">#</th>
+                                <th scope="col">views</th>
+                                <th scope="col"  class="text-center">products</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php 
+                                    $temp = 0;
+                                ?>
+                            @foreach ($product_views as $product)
+                                    <?php  $temp++?>
+                            <tr>
+                                <th scope="row">{{ $temp }}</th>
+                                <td>{{ $product->view_count }}</td>
+                                <td class="text-center"> <a target="_blank" href="{{ route('productDetail',$product->product->slug) }}">{{ $product->product->name }}</a></td>
+                            </tr>
+                            @endforeach
+                           
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    
+            
+    {{-- </div> --}}
+    
 @endsection

@@ -7,7 +7,9 @@ use App\Models\Category_product;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\Product;
+use App\Models\Product_view;
 use App\Models\Comment;
+use Illuminate\Support\Facades\Auth;
 
 // use Illuminate\Support\Facades\Response;
 
@@ -79,6 +81,7 @@ class ProductsController extends Controller
         //     ->orWhereHas('category_product', function ($query) use ($categoryId) {
         //         $query->where('cat_parent', $categoryId);
         //     });
+
         $sort = $request->input('sortProdByCate');
         // $products  = Product::query();
         if ($sort === 'name_asc') {
@@ -89,6 +92,8 @@ class ProductsController extends Controller
             $products->orderBy('price', 'desc');
         } elseif ($sort === 'price_asc') {
             $products->orderBy('price', 'asc');
+        } else {
+            abort(404);
         }
         $sortdProducts = $products->get();
         $html_cate = view('Products.ajaxSortProductsByCate', compact('sortdProducts'))->render(); // data for ajjax
@@ -104,7 +109,6 @@ class ProductsController extends Controller
 
         $categories = Category_product::where('status', 1)->whereNull('cat_parent')->get();
         $renderMenu = $this->renderCategory($categories); // get cate menu
-
         $product = Product::where('slug', $slug)->first();
 
         if ($product) {
@@ -114,8 +118,22 @@ class ProductsController extends Controller
             abort(404);
         }
 
+        $product_id = $product->id;
+        $productView = Product_view::where('product_id', $product_id)->first();
+        if ($productView) {
+            $productView->increment('view_count');
+
+        } else {
+            Product_view::create(
+                [
+                    'product_id' => $product_id,
+                    'view_count' => 1,
+                ]
+            );
+        }
+
         // cmt
-              $comments = $product->comments()->whereNull('parent_id')->paginate(5);
+        $comments = $product->comments()->whereNull('parent_id')->paginate(5);
 
         // return $comments = Comment::with('product')->get();
 
@@ -165,7 +183,7 @@ class ProductsController extends Controller
             ->sortByDesc('total_sold')
             ->take(6)
             ->values();
-        return view('Products.detailproduct', compact('product', 'renderMenu', 'relatedProducts' ,'comments',));
+        return view('Products.detailproduct', compact('product', 'renderMenu', 'relatedProducts', 'comments', ));
     }
 
 
