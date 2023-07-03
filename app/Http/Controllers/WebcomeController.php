@@ -14,6 +14,7 @@ class WebcomeController extends Controller
     // ----------------------------------------1
     function indexx()
     { //phone
+        
         // $phoneCategory = Category_product::where('name', 'điện thoại')->first();
         // $phoneProducts = $phoneCategory->productsRecursive();
         $categories = Category_product::where('status', 1)->whereNull('cat_parent')->get();

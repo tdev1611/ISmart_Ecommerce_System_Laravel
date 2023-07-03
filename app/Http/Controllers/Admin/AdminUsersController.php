@@ -164,37 +164,80 @@ class AdminUsersController extends Controller
 
 
     // action  : delete all , restore all
+    // function action(Request $request)
+    // {
+    //     // không được xóa chính người đang login
+    //     $list_checks = $request->list_check;  
+    //     if ($list_checks) {
+    //         foreach ($list_checks as $k => $id) {
+    //             if (Auth::id() == $id) {
+    //                 unset($list_checks[$k]); // unset: loại bỏ 1 hoặc nhiều biến truyền vào, tr hợp này loại trừ người đang login 
+    //             }
+    //         }
+    //         //delete -- all - destroy()- xóa nhiều theo dạng mảng
+    //         if (!empty($list_checks)) {
+    //             $action = $request->action;  // $request->input('action') | name của select, khi có dữ liêu của $list_checks
+    //             if ($action == 'delete') {
+    //                 $user =  User::destroy($list_checks);
+    //                 return redirect(route('admin.listusers'))->with('success', 'Xóa thành công');
+    //             }
+    //             // restore
+    //             if ($action == 'restore') {
+    //                 $user =  User::wherein('id', $list_checks)->restore();
+    //                 return redirect(route('admin.listusers'))->with('success', 'Khôi phục thành công');
+    //             }
+    //             //delete permanently
+    //             if ($action == 'forceDelelte') {
+    //                 $user =  User::withTrashed()->whereIn('id', $list_checks)->forceDelete();
+    //                 return redirect(route('admin.listusers'))->with('success', 'Xóa vĩnh viễn thành công');
+    //             }
+    //         }
+    //         return redirect(route('admin.listusers'))->with('required', 'Vui lòng  chọn chức năng');
+    //     } else {
+    //         return redirect(route('admin.listusers'))->with('required', 'Vui lòng  chọn bản ghi để thực hiện');
+    //     }
+    // }
+
     function action(Request $request)
     {
-        // không được xóa chính người đang login
-        $list_checks = $request->list_check;   // chỉ đến name của input
-        if ($list_checks) {
+        $list_checks = $request->list_check; // chỉ đến name của input
+        $action = $request->action;
+
+        if (empty($list_checks)) {
+            return redirect()->back()->with('required', 'Vui lòng chọn bản ghi để thực hiện!');
+        } else {
             foreach ($list_checks as $k => $id) {
                 if (Auth::id() == $id) {
-                    unset($list_checks[$k]); // unset: loại bỏ 1 hoặc nhiều biến truyền vào, tr hợp này loại trừ người đang login 
+                    unset($list_checks[$k]);
                 }
             }
-            //delete -- all - destroy()- xóa nhiều theo dạng mảng
-            if (!empty($list_checks)) {
-                $action = $request->action;  // $request->input('action') | name của select, khi có dữ liêu của $list_checks
-                if ($action == 'delete') {
-                    $user =  User::destroy($list_checks);
-                    return redirect(route('admin.listusers'))->with('success', 'Xóa thành công');
-                }
-                // restore
-                if ($action == 'restore') {
-                    $user =  User::wherein('id', $list_checks)->restore();
-                    return redirect(route('admin.listusers'))->with('success', 'Khôi phục thành công');
-                }
-                //delete permanently
-                if ($action == 'forceDelelte') {
-                    $user =  User::withTrashed()->whereIn('id', $list_checks)->forceDelete();
-                    return redirect(route('admin.listusers'))->with('success', 'Xóa vĩnh viễn thành công');
-                }
-            }
-            return redirect(route('admin.listusers'))->with('required', 'Vui lòng  chọn chức năng');
-        } else {
-            return redirect(route('admin.listusers'))->with('required', 'Vui lòng  chọn bản ghi để thực hiện');
         }
+        if (empty($action)) {
+            return redirect()->back()->with('required', 'Vui lòng chọn chức năng');
+        }
+        
+        $successMessage = '';
+        switch ($action) {
+            case 'delete':
+                User::destroy($list_checks);
+                $successMessage = 'Xóa thành công';
+                break;
+            case 'restore':
+                User::withTrashed()->wherein('id', $list_checks)->restore();
+                $successMessage = 'Khôi phục thành viên thành công';
+                break;
+            case 'forceDelelte':
+                User::withTrashed()->whereIn('id', $list_checks)->forceDelete();
+                $successMessage = 'Xóa vĩnh viễn thành viên thành công!';
+                break;
+        }
+        return redirect()->back()->with('success', $successMessage);
+
+
     }
+
+
+
+
+
 }

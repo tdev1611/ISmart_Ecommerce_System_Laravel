@@ -104,32 +104,59 @@ class AdminOrderConroller extends Controller
 
 
     // action  : delete all , restore all
+    // function action(Request $request)
+    // {
+    //     $list_checks = $request->list_check;   // chỉ đến name của input
+    //     if ($list_checks) {
+    //         if (!empty($list_checks)) {
+    //             $action = $request->action;
+    //             if ($action == 'delete') {
+    //                 Order::whereIn('id', $list_checks)->delete();
+    //                 return redirect()->back()->with('success', 'Xóa đơn hàng thành công');
+    //             } elseif ($action == 'restore') {
+    //                 Order::withTrashed()->whereIn('id', $list_checks)->restore();
+    //                 return redirect()->back()->with('success', 'Khôi phục đơn hàng thành công');
+    //             } elseif ($action == 'forceDelelte') {
+    //                 Order::withTrashed()->whereIn('id', $list_checks)->forceDelete();
+    //                 return redirect()->back()->with('success', 'Xóa vĩnh viễn đơn hàng thành công');
+    //             }
+    //         }
+    //         return redirect()->back()->with('warning', 'Vui lòng chọn chức năng');
+    //     } else {
+    //         return redirect()->back()->with('warning', 'Vui lòng chọn bản ghi');
+    //     }
+     
+    // }
+
     function action(Request $request)
     {
-        $list_checks = $request->list_check;   // chỉ đến name của input
-        if ($list_checks) {
-            if (!empty($list_checks)) {
-                $action = $request->action;
-                if ($action == 'delete') {
-                    Order::whereIn('id', $list_checks)->delete();
-                    return redirect()->back()->with('success', 'Xóa đơn hàng thành công');
-                } elseif ($action == 'restore') {
-                    Order::withTrashed()->whereIn('id', $list_checks)->restore();
-                    return redirect()->back()->with('success', 'Khôi phục đơn hàng thành công');
-                } elseif ($action == 'forceDelelte') {
-                    Order::withTrashed()->whereIn('id', $list_checks)->forceDelete();
-                    return redirect()->back()->with('success', 'Xóa vĩnh viễn đơn hàng thành công');
-                }
-            }
-            return redirect()->back()->with('warning', 'Vui lòng chọn chức năng');
-        } else {
+        $list_checks = $request->list_check;
+        $action = $request->action;
+        if (empty($list_checks)) {
             return redirect()->back()->with('warning', 'Vui lòng chọn bản ghi');
         }
-     
+        if (empty($action)) {
+            return redirect()->back()->with('warning', 'Vui lòng chọn chức năng');
+        }
+        $successMessage = '';
+        switch ($action) {
+            case 'delete':
+                Order::whereIn('id', $list_checks)->delete();
+                $successMessage = 'Xóa đơn hàng thành công';
+                break;
+            case 'restore':
+                Order::withTrashed()->whereIn('id', $list_checks)->restore();
+                $successMessage = 'Khôi phục đơn hàng thành công!';
+                break;
+            case 'forceDelelte':
+                Order::withTrashed()->whereIn('id', $list_checks)->forceDelete();
+                $successMessage = 'Xóa đơn hàng vĩnh viễn thành công!';
+                break;
+        }
+
+        return redirect()->back()->with('success', $successMessage);
+
     }
-
-
-
 
 
     // update trang thái đơn hàng
