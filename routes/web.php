@@ -18,6 +18,10 @@ use Laravel\Socialite\Facades\Socialite;
 */
 
 
+//bot
+Route::match(['get', 'post'], '/botman', 'BotManController@handle');
+
+
 // login-social
 
 Route::get('auth/facebook/redirect', 'ActionsController@redirectToFacebook')->name('facebook.redirect');
@@ -101,7 +105,7 @@ Route::group(['middleware' => ['auth', 'verified', 'CheckRole'], 'prefix' => 'ad
 // dasshboard 
 // ,'CheckRole'
 Route::group(['middleware' => ['auth', 'verified',], 'prefix' => 'admin', 'namespace' => 'Admin'], function () {
-    Route::get('/dashboard', 'DashboardController@dashboard')->can('orders.view');
+    Route::get('/dashboard', 'DashboardController@dashboard')->name('adm.dashboard')->can('orders.view');
     Route::get('/', 'DashboardController@dashboard')->can('orders.view');
 });
 Route::get('/logout', 'ActionsController@perform')->name('logout.perform')->middleware('auth');

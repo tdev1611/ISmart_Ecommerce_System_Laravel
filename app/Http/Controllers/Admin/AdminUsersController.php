@@ -16,16 +16,11 @@ class AdminUsersController extends Controller
 
     function __construct()
     {
-
         $this->middleware(function ($request, $next) {
             session(['modules_active' => 'users']);
             return $next($request);
         });
     }
-
-
-
-
     // add user
     function adduser()
     {
@@ -63,8 +58,6 @@ class AdminUsersController extends Controller
     function listusers(Request $request)
     {
 
-
-
         $users = User::paginate(10);
         $key = request()->key;
         $status = $request->status;   // $status  = $request->input('status'); //  lấy giá trị status trên url
@@ -85,11 +78,8 @@ class AdminUsersController extends Controller
         $user_disable = User::onlyTrashed()->count();
         $counts = [$user_active, $user_disable];
 
-        // $users = User::orderby('name', 'desc')->paginate(3);
-        // if ($key = request()->key) {    //   y là name của input search
-        //     $users = User::orderby('name', 'desc')->where('username', 'like','%'.$key.'%')->paginate(3);   //search
-        // }
-
+        
+        
         return    view('admin.Users.list-user', compact('users', 'counts', 'status'));
     }
 

@@ -16,17 +16,17 @@ class OrderController extends Controller
 {
     //
 
-    function checkOut()
+    function checkOut(Request $request)
     {
         $infoProduct = Cart::content();
-        // user
+     
+        
 
         return view('cart.checkout', compact('infoProduct', ));
     }
     // xử lý order
     function payment(Request $request)
     {
-
         if ($request->payment_method == 1) {
             $cart = Cart::content();
             // foreach ($cart as $a) {
@@ -125,8 +125,8 @@ class OrderController extends Controller
     {
         $id = Auth::user()->id; // 
         $order = Order::where('customer_id', $id)->orderBy('created_at', 'desc')->first();
-          $order_detail = json_decode($order->order_detail, true);
-        
+        $order_detail = json_decode($order->order_detail, true);
+
         return view('Orders.payOnline', compact('order', 'order_detail'));
     }
 

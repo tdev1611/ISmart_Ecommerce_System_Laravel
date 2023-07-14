@@ -187,7 +187,6 @@ class AdminProductController extends Controller
                 'detail' => 'Chi tiết sản phẩm',
             ]
         );
-
         $update = $request->only('name', 'slug', 'price','sale_price', 'desc', 'detail', 'category_product_id', 'status', 'featured_products', 'list_images');
         // mitil files
         if ($request->hasFile('list_images')) {
@@ -212,7 +211,6 @@ class AdminProductController extends Controller
         Product::where('id', $id)->update($update);
         return redirect(route('admin.listProduct'))->with('success', 'Cập nhật thông tin sản phẩm thành công');
     }
-
 
     //action 
     function action(Request $request)

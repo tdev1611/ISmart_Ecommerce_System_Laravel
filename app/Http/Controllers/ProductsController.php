@@ -5,13 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Category_product;
 use App\Models\Order;
-use App\Models\User;
 use App\Models\Product;
 use App\Models\Product_view;
-use App\Models\Comment;
-use Illuminate\Support\Facades\Auth;
 
-// use Illuminate\Support\Facades\Response;
 
 
 class ProductsController extends Controller
@@ -67,7 +63,6 @@ class ProductsController extends Controller
     // sort category products
     function softProductsByCate(Request $request)
     {
-
         $slug = $request->route('slug');
         $category = Category_product::where('slug', $slug)->first();
         $categoryId = $category->id;
@@ -106,7 +101,6 @@ class ProductsController extends Controller
     function productDetail(Request $request)
     {
         $slug = $request->route('slug');
-
         $categories = Category_product::where('status', 1)->whereNull('cat_parent')->get();
         $renderMenu = $this->renderCategory($categories); // get cate menu
         $product = Product::where('slug', $slug)->first();
@@ -137,8 +131,6 @@ class ProductsController extends Controller
 
         // return $comments = Comment::with('product')->get();
 
-
-
         // cách 3:
         // product same
         //  danh mục chứa sản phẩm
@@ -158,8 +150,6 @@ class ProductsController extends Controller
         #C2 : // set relationship trong models
         // $categoryProduct = $product->category_product;
         // $relatedProducts =   $categoryProduct->productsRecursive();
-
-
 
 
         //  sale best
@@ -187,30 +177,7 @@ class ProductsController extends Controller
     }
 
 
-    // function comment(Request $request, Product $product)
-    // {
-
-    //     $user = Auth::user();
-
-    //     $request->validate(
-    //         [
-    //             'comment' => 'required'
-    //         ],
-    //         [],
-    //         [
-    //             'comment' => 'Bình luận',
-    //         ]
-    //     );
-    //     $content = $request->comment; //  $slug = $request->route('slug');
-    //     $comment = Comment::create([
-    //         'user_id' => $user->id,
-    //         'product_id' => $product->id,
-    //         'content' => $content
-    //     ]);
-
-    //     return redirect()->back();
-    // }
-
+   
     // --- --- --- --- --- --- --- --- --- ----- --- --- --- --- --- --- ----- --- --- --- --- --- --- ---
     // show tab product
     function productShows(Request $request)
@@ -219,7 +186,7 @@ class ProductsController extends Controller
         $renderMenu = $this->renderCategory($categories); // get cate menu
         $categoriess = Category_product::where('status', 1)->whereNull('cat_parent')->paginate(2); // duyệt sản phẩm và phân trang
 
-        $product_views = Product_view::orderBy('view_count','desc')->get();
+        $product_views = Product_view::orderBy('view_count','desc')->take(6)->get();
         //    $categoriess = Category_product::with('product')->get();
 
         return view('Products.showProduct', compact('renderMenu', 'categoriess','product_views' ));

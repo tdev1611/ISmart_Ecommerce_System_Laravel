@@ -58,8 +58,6 @@ Route::group(['prefix' => 'product', 'namespace' => 'Admin'], function () {
     route::post('action', 'AdminProductController@action')->name('admin.actionProduct')->can('products.delete');
 });
 
-
-
 //order
 Route::group(['prefix' => 'order', 'namespace' => 'Admin'], function () {
     Route::get('list', 'AdminOrderConroller@index')->name('admin.listOrder')->can('orders.view');
@@ -90,7 +88,6 @@ Route::group(['prefix' => 'role', 'namespace' => 'Admin'], function () {
     Route::get('edit/{role}', 'AdminRolesController@editRole')->name('role.edit')->can('roles.edit'); //edit
     Route::post('update/{role}', 'AdminRolesController@updateRole')->name('role.update')->can('roles.edit'); //update
     Route::get('delete/{role}', 'AdminRolesController@deleteRole')->name('role.delete')->can('roles.delete'); //del
-
     Route::get('search', 'AdminRolesController@searchRole')->name('role.search'); //del
 
 });

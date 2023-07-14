@@ -2,188 +2,232 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/solid.min.css">
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"
-        integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <!-- theme meta -->
+    <meta name="theme-name" content="quixlab" />
+    <link rel="shortcut icon" href="https://duchai.blog/blog-tdev/public/client/images/logo.png" type="image/x-icon">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png">
+    <link href="{{ asset('client/admin-template/css/style.css') }}" rel="stylesheet">
     @yield('Laravel-File-Manager')
     <title> @yield('title') </title>
 </head>
 
 <body>
     @yield('style_css')
-    <div id="warpper" class="nav-fixed ">
-        
-        <nav class="topnav shadow navbar-light bg-white d-flex">
-            <div class="navbar-brand"><a href="{{ url('admin/dashboard') }}">TDEV STORE</a></div>
-            <div class="nav-right ">
-                <div class="btn-group mr-auto">
-                    <button type="button" class="btn dropdown" data-toggle="dropdown" aria-haspopup="true"
-                        aria-expanded="false">
-                        <i class="plus-icon fas fa-plus-circle"></i>
-                    </button>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{{ url('admin/post/add') }}">Thêm bài viết</a>
-                        <a class="dropdown-item" href="{{ url('admin/product/add') }}">Thêm sản phẩm</a>
-                        <a class="dropdown-item" href="{{ url('admin/order/list') }}">Xem đơn hàng</a>
-                    </div>
-                </div>
-                <div class="btn-group">
-                    <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                        aria-expanded="false">
-                        {{ Auth::user()->name }}
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-right">
-                        {{-- <a class="dropdown-item" href="#">Tài khoản</a> --}}
-                        <a class="dropdown-item" href="{{ route('logout.perform') }}">Log out</a>
-                    </div>
-                </div>
-            </div>
-        </nav>
-
-        <!-- end nav  -->
-        @php
-            $modules_active = session('modules_active');
-            //    dd($modules_active)
-        @endphp
+    <!--*******************
+        Preloader start
+    ********************-->
+    <div id="preloader">
+        <div class="loader">
+            <svg class="circular" viewBox="25 25 50 50">
+                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3"
+                    stroke-miterlimit="10" />
+            </svg>
+        </div>
+    </div>
+    <!--*******************
+        Preloader end
+    ********************-->
 
 
-        <div id="page-body" class="d-flex">
-            <div id="sidebar" class="bg-white">
-                <ul id="sidebar-menu">
-                    <li class="nav-link {{ $modules_active == 'dashboard' ? 'active' : ' ' }}">
-                        <a href="{{ url('admin/dashboard') }}">
-                            <div class="nav-link-icon d-inline-flex">
-                                <i class="far fa-folder"></i>
-                            </div>
-                            Dashboard
-                        </a>
-                        <i class="arrow fas fa-angle-right"></i>
-                    </li>
-                    <li class="nav-link {{ $modules_active == 'pages' ? 'active' : '' }}">
-                        <a href="{{ url('admin/page/list') }}">
-                            <div class="nav-link-icon d-inline-flex">
-                                <i class="far fa-folder"></i>
-                            </div>
-                            Page
-                        </a>
-                        <i class="arrow fas fa-angle-right"></i>
+    <!--**********************************
+        Main wrapper start
+    ***********************************-->
+    <div id="main-wrapper">
 
-                        <ul class="sub-menu">
-                            <li><a href="{{ url('admin/page/add') }}">Add new</a></li>
-                            <li><a href="{{ url('admin/page/list') }}">List</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-link {{ $modules_active == 'posts' ? 'active' : '' }}">
-                        <a href="{{ url('admin/post/list') }}">
-                            <div class="nav-link-icon d-inline-flex">
-                                <i class="far fa-folder"></i>
-                            </div>
-                            Posts
-                        </a>
-                        <i class="arrow fas fa-angle-right"></i>
-                        <ul class="sub-menu">
-                            <li><a href="{{ url('admin/post/add') }}">Add new</a></li>
-                            <li><a href="{{ url('admin/post/list') }}">List</a></li>
-                            <li><a href="{{ url('admin/post/category') }}">Category</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-link {{ $modules_active == 'products' ? 'active' : '' }}">
-                        <a href="{{ url('admin/product/list') }}">
-                            <div class="nav-link-icon d-inline-flex">
-                                <i class="far fa-folder"></i>
-                            </div>
-                            Products
-                        </a>
-                        <i class="arrow fas fa-angle-down"></i>
-                        <ul class="sub-menu">
-                            <li><a href="{{ url('admin/product/add') }}">Add new</a></li>
-                            <li><a href="{{ url('admin/product/list') }}">List</a></li>
-                            <li><a href="{{ url('admin/product/category') }}">Category</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-link {{ $modules_active == 'orders' ? 'active' : '' }}">
-                        <a href="{{ url('admin/order/list') }}">
-                            <div class="nav-link-icon d-inline-flex">
-                                <i class="far fa-folder"></i>
-                            </div>
-                           Sale
-                        </a>
-                        <i class="arrow fas fa-angle-right"></i>
-                        <ul class="sub-menu">
-                            <li><a href="{{ url('admin/order/list') }}">Orders</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-link {{ $modules_active == 'users' ? 'active' : '' }}">
-                        <a href="{{ route('admin.listusers') }}">
-                            <div class="nav-link-icon d-inline-flex">
-                                <i class="far fa-folder"></i>
-                            </div>
-                            Users
-                        </a>
-                        <i class="arrow fas fa-angle-right"></i>
-
-                        <ul class="sub-menu">
-                            <li><a href="{{ route('admin.adduser') }}">Add new</a></li>
-                            <li><a href="{{ route('admin.listusers') }}">List</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-link {{ $modules_active == 'roles' ? 'active' : '' }}">
-                        <a href="{{ url('admin/role/list') }}">
-                            <div class="nav-link-icon d-inline-flex">
-                                <i class="far fa-folder"></i>
-                            </div>
-                            Authorization Users
-                        </a>
-                        <i class="arrow fas fa-angle-right"></i>
-                        <ul class="sub-menu">
-                            <li><a href="{{ url('admin/permission/add') }}">Permission</a></li>
-                            <li><a href="{{ url('admin/role/add') }}">Add Role</a></li>
-                            <li><a href="{{ url('admin/role/list') }}">List Role</a></li>
-                        </ul>
-                    </li>
-
-
-                </ul>
-            </div>
-
-
-            <nav class="navbar navbar-expand-md navbar-light bg-light sidebar-menu">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#sidebar-nav"
-                    aria-controls="sidebar-nav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="sidebar-nav">
-
-                </div>
-            </nav>
-
-
-
-            <div id="wp-content">
-                @yield('content')
-
+        <!--**********************************
+            Nav header start
+        ***********************************-->
+        <div class="nav-header">
+            <div class="brand-logo">
+                <a href="{{ url('admin') }}">
+                    <img src="https://duchai.blog/blog-tdev/public/client/images/logo.png" alt="" style="position: absolute;
+                    top: 10%;">
+                    <span class="logo-compact"><img src="https://duchai.blog/blog-tdev/public/client/images/logo.png" alt=""></span>
+                    <span class="brand-title">
+                        <img src="images/logo-text.png" alt="">
+                    </span>
+                </a>
             </div>
         </div>
+        <!--**********************************
+            Nav header end
+        ***********************************-->
 
+        <!--**********************************
+            Header start
+        ***********************************-->
+        <div class="header">
+            <div class="header-content clearfix">
+
+                <div class="nav-control">
+                    <div class="hamburger">
+                        <span class="toggle-icon"><i class="icon-menu"></i></span>
+                    </div>
+                </div>
+             
+                <div class="header-right">
+                    <ul class="clearfix">
+                        <li class="icons dropdown">
+                            {{ Auth::user()->name }}
+                        </li>
+                        <li class="icons dropdown">
+                            <div class="user-img c-pointer position-relative" data-toggle="dropdown">
+                                <span class="activity active"></span>
+                                <img src="{{ asset('client/admin-template/images/imgs/1.jpg') }}" height="40" width="40" alt="">
+                            </div>
+                            <div class="drop-down dropdown-profile animated fadeIn dropdown-menu">
+                                <div class="dropdown-content-body">
+                                    <ul>
+                                        <li>
+                                            <a href="{{ route('admin.edit',Auth::user()->id) }}"><i class="icon-user"></i>
+                                                <span>Profile</span></a>
+                                        </li>
+                                        <hr class="my-2">
+                                     
+                                        <li><a href="{{ route('logout.perform') }}"><i class="icon-key"></i> <span>Logout</span></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+
+        <!--**********************************
+            Sidebar start
+        ***********************************-->
+        <div class="nk-sidebar">
+            <div class="nk-nav-scroll">
+                <ul class="metismenu" id="menu">
+                    <li class="nav-label">
+                        <a href="{{ url('admin/dashboard') }}">Dashboard</a>
+                    </li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-screen-tablet menu-icon"></i><span class="nav-text">Trang</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{{ route('admin.addPage') }}">Thêm mới</a></li>
+                            <li><a href="{{ route('admin.listPage') }}">Danh sách</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-note menu-icon"></i><span class="nav-text">Bình luận</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="./form-basic.html">Danh sách</a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-menu menu-icon"></i><span class="nav-text">Bài viết</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{{ route('admin.addPost') }}" aria-expanded="false">Thêm mới</a></li>
+                            <li><a href="{{ route('admin.listPost') }}" aria-expanded="false">Danh sách</a></li>
+                            <li><a href="{{ route('admin.categoryPost') }}" aria-expanded="false">Danh mục</a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="fa fa-product-hunt" aria-hidden="true"></i><span class="nav-text">Sản
+                                phẩm</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{{ route('admin.addProduct') }}">Thêm mới</a></li>
+                            <li><a href="{{ route('admin.listProduct') }}">Danh sách</a></li>
+                            <li><a href="{{ route('admin.categoryProduct') }}">Danh mục</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="fa fa-first-order" aria-hidden="true"></i>
+                            <span class="nav-text">Bán hàng</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{{ route('admin.listOrder') }}">Đơn hàng</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="fa fa-user" aria-hidden="true"></i>
+                            <span class="nav-text">Users</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{{ route('admin.adduser') }}">Thêm mới</a></li>
+                            <li><a href="{{ route('admin.listusers') }}">Danh sách</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-notebook menu-icon"></i><span class="nav-text">Phân quyền</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{{ route('permission_create') }}">Quyền</a></li>
+                            <li><a href="{{ route('permission.index') }}">Thêm vai trò</a></li>
+                            <li><a href="{{ route('permission_create') }}">Danh sách vai trò</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!--**********************************
+            Sidebar end
+        ***********************************-->
+
+        <!--**********************************
+            Content body start
+        ***********************************-->
+        <div class="content-body">
+
+            @yield('content')
+            <!-- #/ container -->
+        </div>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+
+
+        <!--**********************************
+            Footer start
+        ***********************************-->
+        <div class="footer">
+            <div class="copyright">
+                <p>Copyright &copy; Designed & Developed by <a href="https://themeforest.net/user/quixlab">Quixlab</a>
+                    2018</p>
+            </div>
+        </div>
+        <!--**********************************
+            Footer end
+        ***********************************-->
     </div>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
 
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <!--**********************************
+        Scripts
+    ***********************************-->
+    <script src="{{ asset('client/admin-template/plugins/common/common.min.js') }}"></script>
+    <script src="{{ asset('client/admin-template/js/custom.min.js') }}"></script>
+    <script src="{{ asset('client/admin-template/js/settings.js') }}"></script>
+    <script src="{{ asset('client/admin-template/js/gleek.js') }}"></script>
+    <script src="{{ asset('client/admin-template/js/styleSwitcher.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('client/admin-template/js/dashboard/dashboard-1.js') }}"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
-    </script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
-    </script>
 
     @yield('create_slug')
     <script>
