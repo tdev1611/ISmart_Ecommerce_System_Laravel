@@ -76,12 +76,7 @@
                                 <li>
                                     <a href="{{ route('intro') }}" title="">Giới thiệu</a>
                                 </li>
-                                {{-- <li>
-                                    <a href="?page=detail_blog" title="">Liên hệ</a>
-                                </li> --}}
-                                {{-- <li>
-                                    <a href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li> --}}
+                                
                                 <li>
                                     <a href="{{ route('logout') }}"> LOG OUT</a>
                                 </li>

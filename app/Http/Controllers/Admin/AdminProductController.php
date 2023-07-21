@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category_product;
 use App\Models\Product;
+use App\Models\Color;
 use Illuminate\Support\Str;
 
 class AdminProductController extends Controller
@@ -25,6 +26,7 @@ class AdminProductController extends Controller
     {
         //index
         $cat_products = Category_product::orderBy('name')->paginate(20);
+
 
         return view('admin.Products.cat-product', compact('cat_products'));
     }
@@ -63,7 +65,8 @@ class AdminProductController extends Controller
     function addProduct()
     {
         $cat_products = Category_product::all();
-        return view('admin.Products.add-product', compact('cat_products'));
+        $colors = Color::all();
+        return view('admin.Products.add-product', compact('cat_products', 'colors'));
     }
     // store
     function createProduct(Request $request)
@@ -78,6 +81,7 @@ class AdminProductController extends Controller
                 'desc' => 'required',
                 'file' => 'required',
                 'detail' => 'required',
+                'colors' => 'required|exists:colors,id',
                 'featured_products' => 'required',
                 'list_images' => 'required',
                 'category_product_id' => 'required|exists:category_products,id',
@@ -85,7 +89,7 @@ class AdminProductController extends Controller
 
             ],
             [
-                'lt'=> 'Giá sale phải nhỏ hơn giá gốc'
+                'lt' => 'Giá sale phải nhỏ hơn giá gốc'
             ],
             [
                 'name' => 'Tên sản phẩm',
@@ -94,6 +98,7 @@ class AdminProductController extends Controller
                 'list_images' => 'Ảnh chi tiết',
                 'file' => 'Ảnh',
                 'detail' => 'Chi tiết sản phẩm',
+                'colors' => 'Màu',
 
             ]
         );
@@ -120,7 +125,9 @@ class AdminProductController extends Controller
             $input['images'] = $img;
         }
 
-        Product::create($input);
+        $product = Product::create($input);
+        $colors = $request->input('colors');
+        $product->colors()->attach($colors);
         return redirect(route('admin.addProduct'))->with('success', 'Thêm sản phẩm thành công');
     }
 
@@ -156,8 +163,9 @@ class AdminProductController extends Controller
     function editProduct($id)
     {
         $product = Product::find($id);
+         $colors =  Color::all();
         $cat_products = Category_product::all();
-        return view('admin.Products.edit-product', compact('product', 'cat_products'));
+        return view('admin.Products.edit-product', compact('product', 'cat_products','colors'));
     }
     function updateProduct(Request $request, $id)
     {
@@ -172,11 +180,12 @@ class AdminProductController extends Controller
                 'desc' => 'required',
                 'detail' => 'required',
                 'status' => 'required',
+                'colors' => 'required|exists:colors,id',
                 'featured_products' => 'required',
                 'category_product_id' => 'required|exists:category_products,id',
             ],
             [
-                'lt'=> 'Giá sale phải nhỏ hơn giá gốc'
+                'lt' => 'Giá sale phải nhỏ hơn giá gốc'
             ],
             [
                 'name' => 'Tên sản phẩm',
@@ -185,9 +194,10 @@ class AdminProductController extends Controller
                 'list_images' => 'Ảnh chi tiết',
                 'file' => 'Ảnh',
                 'detail' => 'Chi tiết sản phẩm',
+                'colors' => 'Màu',
             ]
         );
-        $update = $request->only('name', 'slug', 'price','sale_price', 'desc', 'detail', 'category_product_id', 'status', 'featured_products', 'list_images');
+        $update = $request->only('name', 'slug', 'price', 'sale_price', 'desc', 'detail', 'category_product_id', 'status', 'featured_products', 'list_images');
         // mitil files
         if ($request->hasFile('list_images')) {
             $list_images = [];
@@ -200,7 +210,6 @@ class AdminProductController extends Controller
             }
             $update['list_images'] = json_encode($list_images);
         }
-
         if ($request->hasFile('file')) {
             $file = $request->file;
             $filename = $request->slug . '-' . time() . '.' . $file->getClientOriginalExtension();
@@ -208,7 +217,10 @@ class AdminProductController extends Controller
             $img = "public/uploads/products/" . $filename;
             $update['images'] = $img;
         }
-        Product::where('id', $id)->update($update);
+        $product = Product::where('id', $id)->first();
+        $product->update($update);
+        $colors = $request->input('colors');
+        $product->colors()->sync($colors);
         return redirect(route('admin.listProduct'))->with('success', 'Cập nhật thông tin sản phẩm thành công');
     }
 

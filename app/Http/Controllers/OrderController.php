@@ -19,8 +19,6 @@ class OrderController extends Controller
     function checkOut(Request $request)
     {
         $infoProduct = Cart::content();
-     
-        
 
         return view('cart.checkout', compact('infoProduct', ));
     }
@@ -29,9 +27,7 @@ class OrderController extends Controller
     {
         if ($request->payment_method == 1) {
             $cart = Cart::content();
-            // foreach ($cart as $a) {
-            //     $code_product = $a->options->code;
-            // }
+
             $cart_json_encode = json_encode($cart);
             //# Array[] =>json_encode()=> insert database => json_decode($array,true)=> xuất giao diện
             $infoUser = Auth::user();
@@ -44,9 +40,7 @@ class OrderController extends Controller
                     'phone' => 'required|numeric|min:9'
                 ]
             );
-
             // Lưu thông tin địa chỉ và số điện thoại vào session
-
             Session::put('fullname', $request->input('fullname'));
             Session::put('email', $request->input('email'));
             Session::put('phone', $request->input('phone'));

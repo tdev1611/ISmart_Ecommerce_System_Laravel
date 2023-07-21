@@ -46,8 +46,7 @@
                         <p>{{ $order->note }}</p>
                     </div>
                     <div>
-                        <P class="font-weight-bold">Hình thức thanh toán</P>
-                        <p>{{ $order->payment_method == 1 ? 'Thanh toán tại nhà' : 'Thanh toán online' }}</p>
+                    <p>{{ $order->payment_method == 1 ? 'Thanh toán tại nhà' : 'Thanh toán online' }}</p>
                     </div>
                     <div>
                         {{-- 1: chờ xử lý, 2: Đang xử lý , 3: Thành công --}}
@@ -101,6 +100,7 @@
                                 <th scope="col">Mã</th>
                                 <th scope="col">Ảnh sản phẩm</th>
                                 <th scope="col">Tên sản phẩm</th>
+                                <th scope="col">Màu sắc</th>
                                 <th scope="col">Đơn giá</th>
                                 <th scope="col">Số lượng</th>
                                 <th scope="col">Màu sắc</th>
@@ -126,6 +126,7 @@
                                         <img class="img-fluid" src="{{ url($item['options']['images']) }}" alt="">
                                     </td>
                                     <td>{{ $item['name'] }} </td>
+                                    <td>{{ $item['options']['color'] }} </td>
                                     <td style="width: 125px;">{{ number_format($item['price'], 0, '', '.') }} đ</td>
                                     <td class="text-center"> {{ $item['qty'] }} </td>
                                     <td> color </td>

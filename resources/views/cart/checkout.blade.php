@@ -138,6 +138,7 @@
                                 <thead>
                                     <tr>
                                         <td>Sản phẩm</td>
+                                        <td style="display: inline;">Màu sắc</td>
                                         <td>Số lượng</td>
                                         <td style="text-align:right">Tổng</td>
                                     </tr>
@@ -146,6 +147,7 @@
                                     @foreach ($infoProduct as $item)
                                         <tr class="cart-item">
                                             <td class="product-name">{{ $item->name }}</td>
+                                            <td class="product-name"  >{{ $item->options->color }}</td>
                                             <td><strong class="product-quantity">{{ $item->qty }}</strong></td>
                                             <td style="text-align:right" class="product-total">
                                                 {{ number_format($item->price, 0, '', '.') }}đ </td>

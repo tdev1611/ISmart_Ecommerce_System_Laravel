@@ -149,6 +149,7 @@
                             <td>Mã sản phẩm</td>
                             <td>Ảnh sản phẩm</td>
                             <td>Tên sản phẩm</td>
+                            <td>Màu sản phẩm</td>
                             <td>Giá sản phẩm</td>
                             <td>Số lượng</td>
                             <td>Thành tiền</td>
@@ -169,6 +170,7 @@
                                         alt="">
                                 </td>
                                 <td style="vertical-align: middle;"> {{ $item['name'] }}</td>
+                                <td style="vertical-align: middle;"> {{ $item['options']['color']}}</td>
                                 <td style="vertical-align: middle;"> {{ number_format($item['price'], 0, '', '.') }}</td>
                                 <td style="vertical-align: middle;"> {{ $item['qty'] }}</td>
                                 <td style="vertical-align: middle;"> {{ number_format($item['subtotal'], 0, '', '.') }}đ

@@ -13,8 +13,8 @@ class CartController extends Controller
     //
     function cartshow()
     {
-         $cart =  Cart::content();
-     
+        $cart = Cart::content();
+
         return view('cart.cartShow', compact('cart'));
     }
     //add cart ajjax qty =1
@@ -30,6 +30,7 @@ class CartController extends Controller
             'name' => $product->name,
             'qty' => 1,
             'price' => $product->price,
+
             'options' => [
                 'images' => $product->images,
                 'code' => $product->code,
@@ -56,30 +57,30 @@ class CartController extends Controller
     public function addCartDetailAjax(Request $request)
     {
         $qty = $request->input('qty');
-        $productId = $request->input('product_id');  
+        $color = $request->input('color');
+        $productId = $request->input('product_id');
         $product = Product::find($productId);
-
-        if (!$product) {
-            return response()->json(['error' => 'Không tìm thấy sản phẩm.']);
+        if (!$color) {
+            return response()->json([
+                'error' => 'Không tìm thấy màu sản phẩm.']);
         }
-        Cart::add([
+        $cart = Cart::add([
             'id' => $product->id,
             'name' => $product->name,
             'qty' => $qty,
             'price' => $product->price,
             'options' => [
+                'color' => $color,
                 'images' => $product->images,
                 'code' => $product->code,
                 'slug' => $product->slug,
+
             ],
         ]);
         $cartCount = Cart::count(); // Số lượng sản phẩm trong giỏ hàng
         $cartTotal = Cart::total(); // Tổng giá trị của giỏ hàng
         $list_cart = view('cart.dropcart')->render(); // data for ajjax
-        // $cart = Cart::content();
-        // foreach ($cart as $k => $v) {
-        //     $qty_per = $k->qty;    // số lượng từng phần từ ở card layouts
-        // }
+
 
         return response()->json([
             'success' => true,
@@ -87,6 +88,7 @@ class CartController extends Controller
             'cartTotal' => $cartTotal,
             // 'qty_per' => $qty_per,
             'list_cart' => $list_cart,
+            'cart' => $cart,
         ]);
     }
 
@@ -97,10 +99,12 @@ class CartController extends Controller
         Cart::add([
             'id' => $product->id,
             'name' => $product->name,
-            'qty' => 1,  // get số lượng sản phẩm 
+            'qty' => 1,
+            // get số lượng sản phẩm 
             'price' => $product->price,
             'slug' => $product->slug,
-            'options' => ['images' => $product->images, 'code' => $product->code]  // thông tin phụ   $item ->option->images
+            'color' => $product->color,
+            'options' => ['images' => $product->images, 'code' => $product->code] // thông tin phụ   $item ->option->images
         ]);
         return redirect(route('cartshow'))->with('success', 'Thêm sản phẩm thành công');
     }
@@ -114,7 +118,8 @@ class CartController extends Controller
         Cart::add([
             'id' => $product->id,
             'name' => $product->name,
-            'qty' => $_GET['num-order'],  // get số lượng sản phẩm 
+            'qty' => $_GET['num-order'],
+            // get số lượng sản phẩm 
             'price' => $product->price,
             'slug' => $product->slug,
             'options' => ['images' => $product->images, 'code' => $product->code]
@@ -149,7 +154,7 @@ class CartController extends Controller
     //mua ngay
     function buyNow($id)
     {
-     
+
         $product = Product::find($id);
         Cart::add([
             'id' => $product->id,
@@ -160,30 +165,30 @@ class CartController extends Controller
                 'images' => $product->images,
                 'code' => $product->code,
                 'slug' => $product->slug,
-            ]  // thông tin phụ   $item ->option->images
+            ] // thông tin phụ   $item ->option->images
         ]);
         return redirect(route('showCheckCount'));
     }
-     //mua ngay- detail qty= qty
+    //mua ngay- detail qty= qty
     function buyNowDetail(Request $request, $id)
     {
-        $qty  = $request->num_order ;
+        $qty = $request->num_order;
         $product = Product::find($id);
         Cart::add([
             'id' => $product->id,
             'name' => $product->name,
-            'qty' =>  $qty,
+            'qty' => $qty,
             'price' => $product->price,
             'options' => [
                 'images' => $product->images,
                 'code' => $product->code,
                 'slug' => $product->slug,
-            ]  // thông tin phụ   $item ->option->images
+            ] // thông tin phụ   $item ->option->images
         ]);
         return redirect(route('showCheckCount'));
     }
-        
-    
+
+
     //delte 1 
     function removeCart($rowId)
     {

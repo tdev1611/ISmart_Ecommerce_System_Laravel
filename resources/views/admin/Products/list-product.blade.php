@@ -72,6 +72,7 @@
                                 <th scope="col">Tên sản phẩm</th>
                                 <th scope="col">Sản phẩm nổi bật</th>
                                 <th scope="col">Giá</th>
+                                <th scope="col">Màu</th>
                                 <th scope="col">Danh mục</th>
                                 <th scope="col">Lượt xem</th>
                                 <th scope="col">Ngày tạo</th>
@@ -95,6 +96,12 @@
                                         <td style="width: 257px;"><a href="#">{{ $product->name }}</a></td>
                                         <td>{{ $product->featured_products == 1 ? 'Có' : 'Không' }}</td>
                                         <td>{{ number_format($product->price, 0, '', '.') }}đ</td>
+                                        <td>
+                                            @foreach ($product->colors as $color)
+                                               {{  $color->name }} ,
+                                            @endforeach
+
+                                        </td>
                                         <td>{{ $product->category_product->name }} </td>
                                         <td>
                                                 {{ $product->views->sum('view_count') }}   
@@ -121,7 +128,6 @@
                                 </td>
                             @endif
                         </tbody>
-
                     </table>
                 </form>
                 <nav aria-label="Page navigation example">

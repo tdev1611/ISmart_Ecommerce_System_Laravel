@@ -289,8 +289,15 @@
                             <span class="title">Sản phẩm: </span>
                             <span class="status">{{ $product->status == 1 ? 'Còn hàng' : 'Hết hàng' }}</span>
                         </div>
+                        <div class="num-product">
+                            <span class="title">Màu sắc: </span> <br>
+                            @foreach ($product->colors as $color)
+                                <input type="radio" name="color" id="color_{{ $color->id }}"
+                                    value="{{ $color->name }}">
+                                <label for="color_{{ $color->id }}">{{ $color->name }},</label>
+                            @endforeach
+                        </div>
                         <p class="price">{{ number_format($product->price, 0, '', '.') }}đ</p>
-
                         <form action="{{ route('buyNowDetail', $product->id) }}" method="get">
                             <div id="num-order-wp">
                                 <a title="" name="num" id="minus"><i class="fa fa-minus"></i></a>
@@ -348,7 +355,7 @@
                                                 @can('roles.delete')
                                                     <div>
                                                         {{-- {{ route('deleteCmt',$reply->id) }} --}}
-                                                        <a class="cmt-trash"  href="" data-id="{{ $reply->id }}">
+                                                        <a class="cmt-trash" href="" data-id="{{ $reply->id }}">
                                                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                                                         </a>
                                                     </div>
@@ -470,6 +477,21 @@
             opacity: 0.8;
         }
 
+        #error-message {
+            display: none;
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 2.5rem 1.25rem;
+            background-color: #fff;
+            color: rgb(146, 29, 29);
+            font-size: 1.0625rem;
+            min-width: 18.75rem;
+            z-index: 9999;
+            border-radius: 15px;
+
+        }
+
         .checkmark {
             display: inline-block;
             width: 20px;
@@ -484,22 +506,29 @@
         Sản phẩm đã được thêm vào giỏ hàng thành công
         <span class="checkmark">&#10004;</span>
     </div>
+    <div id="error-message" style="display: none; color: red;">
+        Sản phẩm chưa được chọn màu
+    </div>
 
     <script>
         $(document).on('click', '.add-cart', function(event) {
             event.preventDefault();
-            var productId = $(this).attr('data-id');
-            var qty = $('#num-order').val();
+            let productId = $(this).attr('data-id');
+            let qty = $('#num-order').val();
+            let color = $('input[name="color"]:checked').val();
+           
             $.ajax({
                 url: "{{ route('cart.addDetailajax') }}",
                 method: 'post',
                 data: {
                     'product_id': productId,
                     'qty': qty,
+                    'color': color,
                     // product_id: $request->input controller gửi qua  - productId lấy ở trên,
                     '_token': '{{ csrf_token() }}'
                 },
                 dataType: 'json',
+          
                 success: function(response) {
 
                     $('.qtys').text(response.cartCount); // Tổng gio hang layouts
@@ -515,9 +544,10 @@
                         $('#notification').fadeOut('slow');
                     }, 1000);
                 },
-                error: function(xhr) {
-                    alert('Error: ' + xhr.responseText);
+                error: function(request, error) {
+                    alert(" Can't do because: " + error);
                 },
+
             });
         });
     </script>
@@ -560,32 +590,32 @@
 
     {{-- //delete cmt  --}}
     <script>
-        $(document).ready(function() {            
+        $(document).ready(function() {
             $('.cmt-trash').click(function(e) {
                 e.preventDefault()
                 let cmtId = $(this).attr('data-id');
-                
-                if(confirm("Bạn có chắc chắn muốn xóa bình luận này?")) {
+
+                if (confirm("Bạn có chắc chắn muốn xóa bình luận này?")) {
                     $.ajax({
-                    url: "{{ route('deleteCmt', ':cmtId') }}".replace(':cmtId', cmtId),
-                    // url: "{{ route('deleteCmt', '"cmtId"') }}",
-                    type: 'DELETE',
-                    data: {
-                        // id: cmtId,
-                        _token: '{{ csrf_token() }}'
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        $('#wp-comment' + cmtId).remove();
-                        $('#reply-cmt' + cmtId).remove();
-                    },
-                    error: function(xhr, ajaxOptions, thrownError) {
-                        // alert(xhr.status);
-                        // alert(thrownError);
-                    }
-                })
+                        url: "{{ route('deleteCmt', ':cmtId') }}".replace(':cmtId', cmtId),
+                        // url: "{{ route('deleteCmt', '"cmtId"') }}",
+                        type: 'DELETE',
+                        data: {
+                            // id: cmtId,
+                            _token: '{{ csrf_token() }}'
+                        },
+                        dataType: 'json',
+                        success: function(response) {
+                            $('#wp-comment' + cmtId).remove();
+                            $('#reply-cmt' + cmtId).remove();
+                        },
+                        error: function(xhr, ajaxOptions, thrownError) {
+                            // alert(xhr.status);
+                            // alert(thrownError);
+                        }
+                    })
                 }
-             
+
 
             })
 

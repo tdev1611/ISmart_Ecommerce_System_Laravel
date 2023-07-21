@@ -138,6 +138,20 @@
                                     <span class="text-danger"> {{ $message }}</span>
                                 @enderror
                             </div>
+                            <div>
+                                <?php $selectColors = $product->colors->pluck('id')->toArray(); ?>
+                                <label for="">Danh mục màu</label>
+                                <option class="select_cate" value="">Chọn màu </option>
+                                <select class="form-control" name="colors[]" multiple id="colors">
+                                    @foreach ($colors as $color)
+                                        <option value="{{ $color->id }}" @if (in_array($color->id, $selectColors)) selected @endif>
+                                            {{ $color->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('colors')
+                                    <span class="text-danger"> {{ $message }}</span>
+                                @enderror
+                            </div>
                         </div>
                         <div class="col-6">
                             <div class="form-group">

@@ -78,6 +78,9 @@
                                         Sản phẩm </th>
                                     <th align="left" bgcolor="#02acea"
                                         style="padding:6px 9px;color:#fff;text-transform:uppercase;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:14px">
+                                        Màu sắc </th>
+                                    <th align="left" bgcolor="#02acea"
+                                        style="padding:6px 9px;color:#fff;text-transform:uppercase;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:14px">
                                         Đơn giá </th>
                                     <th align="left" bgcolor="#02acea"
                                         style="padding:6px 9px;color:#fff;text-transform:uppercase;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:14px">
@@ -98,6 +101,9 @@
                                     <tr>
                                         <td align="left" valign="top" style="padding:3px 9px">
                                             <strong>{{ $item['name'] }}</strong>
+                                        </td>
+                                        <td align="left" valign="top" style="padding:3px 9px">
+                                            <strong>{{ $item['options']['color'] }}</strong>
                                         </td>
                                         <td align="left" valign="top" style="padding:3px 9px">
                                             <span>{{ number_format($item['price'], 0, '', '.') }}đ</span>

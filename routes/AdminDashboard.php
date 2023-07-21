@@ -14,7 +14,7 @@ Route::group(['namespace' => 'Admin'], function () {
     Route::get('users/delete/{id}', 'AdminUsersController@delete')->name('admin.delete')->can('users.delete'); // xóa user
     Route::get('users/forceDelelte/{id}', 'AdminUsersController@forceDelelte')->name('admin.forceDelelte')->can('users.delete'); // xóa user
     Route::get('users/restore/{id}', 'AdminUsersController@resote')->name('admin.restoreUser')->can('users.delete'); // xóa user
-    Route::post('users/action/', 'AdminUsersController@action')->name('admin.action')->can('users.delete');  // 
+    Route::post('users/action/', 'AdminUsersController@action')->name('admin.action')->can('users.delete'); // 
 });
 
 //page
@@ -26,7 +26,7 @@ Route::group(['prefix' => 'page', 'namespace' => 'Admin'], function () {
     Route::post('update/{id}', 'AdminPagesController@update')->name('admin.updatePage')->can('pages.edit');
     Route::get('delete/{id}', 'AdminPagesController@delete')->name('admin.deletePage')->can('pages.delete');
     Route::get('resote/{id}', 'AdminPagesController@resote')->name('admin.resotePage')->can('pages.delete');
-    Route::post('action', 'AdminPagesController@action')->name('admin.actionPage')->can('pages.delete');  // action
+    Route::post('action', 'AdminPagesController@action')->name('admin.actionPage')->can('pages.delete'); // action
 });
 
 
@@ -37,7 +37,7 @@ Route::group(['prefix' => 'post', 'namespace' => 'Admin'], function () {
     Route::get('category', 'AdminPostController@category')->name('admin.categoryPost')->can('posts.view');
     Route::get('category/delete/{id}', 'AdminPostController@deletecategory')->name('admin.deletecatPost')->can('posts.delete');
     Route::get('add', 'AdminPostController@addPost')->name('admin.addPost')->can('posts.add');
-    route::post('store', 'AdminPostController@createPost')->name('admin.createPost')->can('posts.add');  // thêm post
+    route::post('store', 'AdminPostController@createPost')->name('admin.createPost')->can('posts.add'); // thêm post
     Route::get('list', 'AdminPostController@listPost')->name('admin.listPost')->can('posts.view');
     Route::get('delete/{id}', 'AdminPostController@deletePost')->name('admin.deletePost')->can('posts.delete');
     Route::get('edit/{id}', 'AdminPostController@editPost')->name('admin.editPost')->can('posts.edit');
@@ -51,7 +51,7 @@ Route::group(['prefix' => 'product', 'namespace' => 'Admin'], function () {
     route::get('category/delete/{id}', 'AdminProductController@deletecategory')->name('admin.deletecatProduct')->can('products.delete');
     route::get('list', 'AdminProductController@listProduct')->name('admin.listProduct')->can('products.view');
     route::get('add', 'AdminProductController@addProduct')->name('admin.addProduct')->can('products.add');
-    route::post('product/store', 'AdminProductController@createProduct')->name('admin.createProduct')->can('products.add');  // thêm products
+    route::post('product/store', 'AdminProductController@createProduct')->name('admin.createProduct')->can('products.add'); // thêm products
     route::get('delete/{id}', 'AdminProductController@deleteProduct')->name('admin.deleteProduct')->can('products.delete');
     route::get('edit/{id}', 'AdminProductController@editProduct')->name('admin.editProduct')->can('products.delete');
     route::post('update/{id}', 'AdminProductController@updateProduct')->name('admin.updateProduct')->can('products.edit');
@@ -65,9 +65,14 @@ Route::group(['prefix' => 'order', 'namespace' => 'Admin'], function () {
     Route::get('delete/{id}', 'AdminOrderConroller@delete')->name('admin.deleteOrder')->can('orders.delete'); //deletele
     Route::get('restore/{id}', 'AdminOrderConroller@restore')->name('order.restoreorder')->can('orders.delete'); // restore
     Route::get('forceDelelte/{id}', 'AdminOrderConroller@forceDelelte')->name('order.forceDelelte')->can('orders.delete'); // delete forever
-    Route::post('action/', 'AdminOrderConroller@action')->name('order.action')->can('orders.delete');  // 
+    Route::post('action/', 'AdminOrderConroller@action')->name('order.action')->can('orders.delete'); // 
     Route::post('order-update-status/{id}', 'AdminOrderConroller@update_status')->name('order.update_status')->can('orders.edit'); // update trạng thái đơn hàng
 
+});
+
+Route::group(['prefix' => 'color', 'namespace' => 'Admin'], function () {
+    Route::get('create', 'AdminColorController@create')->name('admin.createColor');
+    Route::post('store', 'AdminColorController@store')->name('admin.storeColor');
 });
 
 //permission 

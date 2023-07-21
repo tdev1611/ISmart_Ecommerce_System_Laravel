@@ -124,11 +124,24 @@
                                 <div class="img-list">
                                     <ul id="image-list"></ul>
                                 </div>
-
                                 @error('list_images')
                                     <span class="text-danger"> {{ $message }}</span>
                                 @enderror
                             </div>
+                            <div>
+                                <label for="">Danh mục màu</label>
+                                <option class="select_cate" value="">Chọn màu </option>
+                                <select class="form-control" name="colors[]" multiple id="colors">
+                                    @foreach ($colors as $color)
+                                        <option value="{{ $color->id }}">
+                                            {{ $color->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('colors')
+                                    <span class="text-danger"> {{ $message }}</span>
+                                @enderror
+                            </div>
+
                         </div>
                         <div class="col-6">
                             <div class="form-group">

@@ -152,6 +152,11 @@
                         </ul>
                     </li>
                     <li>
+                        <a class="has-arrow" href="{{ route('admin.createColor') }}" aria-expanded="false">
+                            <i class="fa fa-product-hunt" aria-hidden="true"></i><span class="nav-text">Màu</span>
+                        </a>
+                    </li>
+                    <li>
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false">
                             <i class="fa fa-first-order" aria-hidden="true"></i>
                             <span class="nav-text">Bán hàng</span>
@@ -205,8 +210,7 @@
         ***********************************-->
         <div class="footer">
             <div class="copyright">
-                <p>Copyright &copy; Designed & Developed by <a href="https://themeforest.net/user/quixlab">Quixlab</a>
-                    2018</p>
+                <p>Duchai -Tdev</p>
             </div>
         </div>
         <!--**********************************

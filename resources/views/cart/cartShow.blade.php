@@ -73,6 +73,7 @@
                                         <td>Mã sản phẩm</td>
                                         <td>Ảnh sản phẩm</td>
                                         <td>Tên sản phẩm</td>
+                                        <td>Màu sắc</td>
                                         <td>Giá sản phẩm</td>
                                         <td>Số lượng</td>
                                         <td colspan="2">Thành tiền</td>
@@ -92,6 +93,9 @@
                                             <td>
                                                 <a href="" title=""
                                                     class="name-product">{{ $item->name }}</a>
+                                            </td>
+                                            <td>
+                                                <span>{{ $item->options->color }}</span>
                                             </td>
                                             <td data-price="{{ $item->price }}" class="price" name="price">
                                                 {{ number_format($item->price, 0, '', '.') }}đ</td>
@@ -168,7 +172,7 @@
         $(document).ready(function() {
             // Lắng nghe sự kiện thay đổi số lượng sản phẩm
             $('.total-quantity').change(function(event) {
-             
+
                 // Lấy giá trị số lượng sản phẩm và rowId của sản phẩm tương ứng
                 var quantity = $(this).val();
                 var rowId = $(this).closest('tr').data(
